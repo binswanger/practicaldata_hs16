@@ -1,0 +1,346 @@
+/* Template style sheet for html scripts
+   BASELINE
+*/
+
+body{
+	background-color: #DADADA;
+}
+
+#content{
+  margin: 5%;
+  background-color: #FAFAFA;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  color: #2B292E;
+}
+
+.downloadPDF{
+	margin-left: 3%;
+}
+
+#docHeader, #scriptText{
+	line-height: 20px;
+}		
+
+#docHeader{
+	text-align: center;
+}
+
+.toc ol  li a {
+	color:#27738C; 
+/* For color of the toc TEXT */
+}
+
+.toc li {
+	color:#27738C; 
+/* For color of toc NUMBERING */
+}
+
+.scriptText, .toc, .tocContainer{
+	padding-left: 3%;
+	padding-right: 3%;
+	padding-bottom: 10px;
+}
+
+.title {
+	text-transform: uppercase;
+	font-size: 3vw; /*3em;*/
+	padding-top: 3.5%;
+	font-weight: bold;
+	line-height: 140%;
+	color: #770000;
+}
+
+.author {
+	font-size: 2.5vw;	
+	color: #770000;
+}
+
+.date {
+	font-size: 2.5vw;
+	color: #770000;
+}
+
+h1 {
+	font-size: 38px;
+	line-height: 45px;
+	padding-top: 50px;
+}
+
+h2 {
+	font-size: 28px;
+	line-height: 35px;
+	padding-top: 30px;
+}
+
+h3 {
+	font-size: 21 px;
+}
+
+h4 {
+	font-size: 18em;
+}
+
+/* Color of headings and links*/
+h1, h2, h3, a, .unnumberedSubtitle {
+	color: #27738C;
+	/*color: #20ac4e; /* This is the HSG color*/
+}
+
+
+p, .scriptText  ul li, .scriptText ol li,
+/* add font size of Previous and Next button*/
+#slides .slidesjs-previous, #slides .slidesjs-next  {
+	font-size: 24px;  /*18px on gitHub experimental*/
+}
+
+
+.leadingQuote {
+	margin-left: 40%;
+	text-align: right;
+	font-size: 18px;
+}
+
+/*Getting curly quotes, opening and closing
+See http://webdesign.tutsplus.com/articles/start-using-quotation-marks-the-correct-way--webdesign-16905*/
+q, 
+blockquote {
+    quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+
+
+	
+.unnumberedSubtitle{
+/* use this class for subtitles that you do not want to appear in the toc*/
+	font-size: 21px;
+	font-weight: bold;
+}
+
+
+
+.markEnd {
+	background-color: #990000; /*#27738C;*/
+	margin-left: 0%;
+	margin-right: 0%;
+	margin-top: 75px;
+	height: 5px;
+}
+
+
+/*  FOR SLIDERS NOT USED ANY MORE*/
+
+	
+	/*original size: 1440 x 900, so the ratio is 0.625/*
+
+    /* For smartphones */
+    @media (max-width: 480px) {
+      .container {
+        width: auto
+      }
+    }
+
+    /* For smaller displays like laptops */
+    @media (min-width: 768px) and (max-width: 979px) {
+      .container {
+        width: 724px;
+		height: 520px;
+      }
+    }
+
+    /* For larger displays */
+    @media (min-width: 1200px) {
+      .container {
+        width: 1150px;
+		height: 830px;
+      }
+    }
+
+
+
+
+/* FOR SLIDERS */
+/*******************/
+
+/* Mostly taken from slide.js, the standard version*/
+
+
+.slideFrame {
+	background-color: #DADADA;
+	/*padding-left: auto; */
+	/*width: auto;/*94%;*/
+	
+	padding-bottom: 5%;
+	/* The padding-bottom is a VERY IMPORTANT TRICK!!!
+	It prevents the child divs of slideFrame to stick out of the parent div!!! */
+	
+}
+
+
+.slideShowTitle{
+	font-weight: bold;
+	color: #990000;
+	margin-bottom: 5px;
+	padding-top: 30px;
+}
+
+
+
+
+ #slides {
+      display: none;
+	   /*margin-left: 3%;
+		  margin-right: 3%; */
+        width: 100%; /*94%;*/
+
+    }
+
+    .container {
+      margin: 0 auto
+	  /*margin-left: 3%;
+		margin-right: 3%;
+		margin-top: 2%;*/
+		
+		/*width: 100%; 94%;*/
+		
+		
+    }
+
+    /* For tablets & smart phones */
+    @media (max-width: 767px) {
+      body {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .container {
+        width: auto
+      }
+    }
+
+    /* For smartphones */
+    @media (max-width: 480px) {
+      .container {
+        width: auto
+      }
+    }
+
+       /* For smaller displays like laptops */
+    @media (min-width: 768px) and (max-width: 979px) {
+      .container {
+        width: 724px;
+		height: 520px;
+      }
+    }
+
+    /* For larger displays */
+    @media (min-width: 1200px) {
+		
+		
+		 .slideFrame {
+			 /* Now it's still too big for edge and safari*/
+		width: 1050px;
+		 padding-left: 60px;
+		 padding-right: 20px;
+		 margin-left: 80px;
+	  }
+      .container {
+		  margin-left: 20px;/*10%; */
+		  margin-right: 20px;  /*10%;*/
+        width: 960px; /* 80% */
+		height: 700px;
+		
+		/* Here is a problem, if the width is reasonably wide, the container div sticks out of the gray frame... 
+		Parent div should contain child div
+		Unfortunately, the slider cannot be made smaller to fit to screen
+		
+		Use padding-bottom in .slideFrame to solve this. See 		http://stackoverflow.com/questions/384145/expand-parent-div-to-child-height
+		*/
+		
+      }
+	 
+    }
+	
+	
+	#slides {
+      display: none
+    }
+
+    #slides .slidesjs-navigation {
+      margin-top:3px;
+    }
+
+    #slides .slidesjs-previous {
+      margin-right: 5px;
+      float: left;
+    }
+
+    #slides .slidesjs-next {
+      margin-right: 5px;
+      float: left;
+    }	
+	
+		
+	
+	/* NOTE: Do not try to change the vertical distance between previous/next  and the image. Do this in the html file, where sliderjs is initialized */
+
+	/* Pagination refers to the dots on the right at the bottom of the slider */
+    .slidesjs-pagination {
+      margin: 6px 0 0;
+      float: right;
+      list-style: none;
+    }
+
+    .slidesjs-pagination li {
+      float: left;
+      margin: 0 1px;
+    }
+
+    .slidesjs-pagination li a {
+      display: block;
+      width: 13px;
+      height: 0;
+      padding-top: 13px;
+      background-image: url(../images/pagination.png);
+      background-position: 0 0;
+      float: left;
+      overflow: hidden;
+    }
+
+    .slidesjs-pagination li a.active,
+    .slidesjs-pagination li a:hover.active {
+      background-position: 0 -13px
+    }
+
+    .slidesjs-pagination li a:hover {
+      background-position: 0 -26px
+    }
+
+    #slides a:link,
+    #slides a:visited {
+      color: #333; /* Change here color of Previous/Next */
+    }
+
+    #slides a:hover,
+    #slides a:active {
+      color: #9e2020
+    }
+
+    .navbar {
+      overflow: hidden;
+    }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
