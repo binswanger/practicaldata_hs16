@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+
+<!-- *********************** HEAD *********************** -->
+<head>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
+  border:solid #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #e0ffff; /*#f5f5f5;*/
+}
+
+.output {
+  background-color: #ffffe6; 
+}
+
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+
+/* Font of variable names*/
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="Prof. Dr. Johannes Binswanger" />
+ 
+<title>Programming for Practical Data Analysis</title>
+
+<!-- ******* LIBRARIES AND PLUGINS ******* -->
+
+<!-- my own css file -->
+<link rel="stylesheet" href="css/baseline.css" type="text/css" />
+
+<!-- jquery, nestedToc, slidesjs ... -->
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script src="js/jquery-nestedToc.js">// get nestedToc from http://www.jqueryscript.net/menu/Dynamic-Table-of-Contents-Generator-With-jQuery-nestedToc.html
+</script>
+
+<script src="js/jquery.slides.min.js"></script>
+
+
+</head>
+
+<!-- *********************** END OF HEAD *********************** -->
+
+<body>
+<!-- ************************************** -->
+<!-- AUTOMATIC INSERTION OF "BACK TO TOP"-->
+<script>
+// Select all headers to prepend "back to top" link.
+// However, exclude the first heading, and the author and date
+// Do so by creating a class noBackToTop. It is possible to assign multiple classes to an element.
+// See http://stackoverflow.com/questions/3015103/jquery-exclude-elements-with-certain-class-in-selector
+
+//NOTE: It is very important to use .before and not .prepend below!!!
+// If you use prepend, the TOC gets screwed as the text shows up there as well!!
+
+$(document).ready(function(){
+	// Automatic "back to top" before a new heading, but not when the heading is of class noBackToTop, because 
+	// there is immediately a subheading
+    $(":header:not('.noBackToTop')").before("<p><a href='#docHeader'; style = 'font-size:1em; color: #A0A0A0'>[Back to top]</a></p>");
+	// The back to top at the end of the document
+	 $(".scriptText").append("<p><a href='#docHeader' style = 'font-size:1em; color: #A0A0A0'>[Back to top]</a></p>");
+	 
+	 //Horizontal ruler
+	 $("h1:not('.noBackToTop')").before("<div class='markEnd'> </div>");
+	 
+	 
+	
+});
+
+
+</script>
+
+
+
+<!-- ************************************** 
+     **************************************
+	 **************************************
+	 
+-->
+
+
+
+
+
+
+
+
+<div id="content">
+
+<!-- *********************** TITLE ITEMS *********************** -->
+
+<div id="docHeader">
+    <p class="title">Programming for Practical Data Analysis</p>
+    <h4 class="author noBackToTop"><em>Johannes Binswanger, University of St. Gallen</em></h4>
+    <h4 class="date noBackToTop"><em>Fall 2016</em></h4>
+</div> <!-- end of docHeader div -->
+
+
+
+<!-- *********************** TABLE OF CONTENT (TOC) *********************** -->
+
+<!-- This contains a toggle button 
+and the table of content -->
+
+<div class="tocContainer">
+     
+<script>
+//jQuery code for toggle button
+$( document ).ready( function( ) {
+$( ".TOCbutton" ).click(function() {
+  $( ".tocToggleContainer" ).toggle();
+});
+});
+</script>
+
+<!-- the button -->
+<button class="TOCbutton" style="color: #27738C;font-size: 20px;">Show/hide table of content</button>
+
+
+
+
+</div>
+
+<div class="tocToggleContainer">
+<!-- This div is empty, for the toggle -->
+</div>
+
+<!-- The following div below has the same class as the previous!! And do not forget to add the particular styling about display. Note that the second div contains another div that contains the toc. This is to keep both the toc and the toggle work. It may not be necessary with the particular toc solution chosen here, but it is necessary for other toc solutions.
+-->
+    <div class="tocToggleContainer" style="display: none">
+    <div class = "toc">
+        <script>
+        // This script is simply copied from 
+        // http://www.jqueryscript.net/menu/Dynamic-Table-of-Contents-Generator-With-jQuery-nestedToc.html
+        $( document ).ready( function( ) {
+        $('.toc').nestedToc({
+    
+        container: '.scriptText'
+    
+      });
+      });
+      </script>
+</div>
+</div>
+
+
+
+
+
+
+<!-- *********************** MAIN DOCUMENT STARTS HERE *********************** -->
+
+
+
+<!-- ************************************************************************* -->
+
+
+
+<div class = "scriptText"> <!-- This div contains the main text -->
+
+
+
+
+
+
+
+
+<!-- *********************** INSTALLATION *********************** -->
+<h1 id="installation" class="noBackToTop" style = "padding-top: 20px;">How to Install R and RStudio</h1>
+
+<p>Below you find two documents that describe in detail how to install R and RStudio on Mac OS X, and on Windows 10. (In Chrome, you may click on the "fit to page" or the zoom buttons to enlarge the documents; in Firefox, you may have to activate Adobe Acrobat; of course, you can easily download the documents onto your hard drive.)</p>
+
+<!-- A4 is  210 × 297, thus the ratio is 1.414-->
+
+
+<table style="width:100%">
+
+	<tr>
+		<th>Installation for Max OS X</th>
+	</tr>
+
+  <tr>
+    <th>
+		<object width="1200" height="850" data="pdfs/Installation Mac OS X.pdf"></object>
+	</th>
+	</tr>
+<!-- Add empty row-->
+	<td bgcolor="#FAFAFA" style="line-height:80px;" colspan=1>&nbsp;</td>
+<tr>
+
+		<th>Installation for Windows 10</th>
+	<tr><th>
+		<object width="1200" height="850" data="pdfs/Installation Windows 10.pdf"></object>
+    
+		
+	</th> 
+
+  </tr>
+</table>
+
+
+
+
+<h1 id="lecture1" class="noBackToTop">Lecture 1</h1>
+
+<p> Below you can find the slides in pdf format for this lecture (which, of course, you can download if you want to make annotations). </p>
+
+
+
+<table style="width:100%">
+
+	<tr>
+		<th>Slides for Lecture 1</th>
+	</tr>
+
+  <tr>
+    <th>
+		<object width="1200" height="880" data="pdfs/Practical programming - Lecture 1.pdf"></object>
+	</th>
+	</tr>
+
+
+</table>
+
+<p>And here you find the R code that we typed during the first lecture. You will also see the respective output from R (on yellow background). You have seen, for a very first time, the following concepts or objects:
+<ul>
+<li> Variables and the assignment of values to variables
+<li> Variable types (numeric, character, logical)
+<li> vectors
+<li> the commands <code>seq()</code>, <code>rep()</code>, <code>cat()</code>, <code>paste()</code>, <code>paste0()</code>
+<li> How to convert numeric values to character values
+<li> How to make a very basic plot
+</ul>
+
+</p>
+
+<!--begin.rcode
+
+
+num = 5
+num
+
+alph = "a"
+alph
+
+class(num)
+class(alph)
+# Variables (like num and alph) can have
+# several "types", e.g. numeric or character
+# This can be checked by using the class command.
+
+numchar = "5"
+class(numchar)
+
+# Some algebra
+###############
+
+5^2
+
+x = exp(1)
+x
+y = log(x)
+y
+
+# Equality vs. equality, and Boolean variables
+##############################################
+
+i = 1
+j = i
+i = 2
+j=i
+j 
+
+i = 1
+i = i + 1
+
+i <-1
+i <-i+1
+i
+
+# = means assignment, not mathematical equality
+
+i==j
+
+z = i==j
+z
+class(z)
+
+# Another data type is "logical", often also 
+# called Boolean
+
+# VECTORS
+##########
+
+a = c(2,5,90)
+a
+
+b = c("w", "o", "w")
+b
+
+cat(b)
+cat(b, sep="")
+
+# delete a variable
+rm(a, b)
+
+# Delete everything in working space
+
+rm(list = ls())
+
+###############################
+x = 0:10
+x
+
+x = seq(from = 0,
+        to = 10, 
+        by = 0.5)
+x
+
+y = x^2
+y
+
+plot(x,y)
+plot(x,y, type="l")
+
+rep("Semester",6)
+
+n = as.character(1:6)
+n
+
+paste(n, rep(". Semester",6))
+
+paste0(n, rep(". Semester",6))
+
+
+end.rcode-->
+
+
+
+
+</div> <!-- end of div scriptText -->
+
+
+<div class='markEnd'> </div> <!-- A last horizontal ruler at the end of the document-->
+
+</div> <!-- end of content div -->
+
+</body>
+</html>

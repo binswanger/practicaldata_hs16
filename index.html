@@ -130,6 +130,68 @@
 <style type="text/css">
 .knitr .inline {
   background-color: #f7f7f7;
+  border:solid 1px #B0B0B0;
+}
+.error {
+	font-weight: bold;
+	color: #FF0000;
+}
+.warning {
+	font-weight: bold;
+}
+.message {
+	font-style: italic;
+}
+.source, .output, .warning, .error, .message {
+	padding: 0 1em;
+  border:solid 1px #F7F7F7;
+}
+.source {
+  background-color: #f5f5f5;
+}
+.rimage .left {
+  text-align: left;
+}
+.rimage .right {
+  text-align: right;
+}
+.rimage .center {
+  text-align: center;
+}
+.hl.num {
+  color: #AF0F91;
+}
+.hl.str {
+  color: #317ECC;
+}
+.hl.com {
+  color: #AD95AF;
+  font-style: italic;
+}
+.hl.opt {
+  color: #000000;
+}
+.hl.std {
+  color: #585858;
+}
+.hl.kwa {
+  color: #295F94;
+  font-weight: bold;
+}
+.hl.kwb {
+  color: #B05A65;
+}
+.hl.kwc {
+  color: #55aa55;
+}
+.hl.kwd {
+  color: #BC5A65;
+  font-weight: bold;
+}
+</style>
+<style type="text/css">
+.knitr .inline {
+  background-color: #f7f7f7;
   border:solid #B0B0B0;
 }
 .error {
@@ -402,6 +464,177 @@ $( ".TOCbutton" ).click(function() {
 
 
 </table>
+
+<p>And here you find the R code that we typed during the first lecture. You will also see the respective output from R (on yellow background). You have seen, for a very first time, the following concepts or objects:
+<ul>
+<li> Variables and the assignment of values to variables
+<li> Variable types (numeric, character, logical)
+<li> vectors
+<li> the commands <code>seq()</code>, <code>rep()</code>, <code>cat()</code>, <code>paste()</code>, <code>paste0()</code>
+<li> How to convert numeric values to character values
+<li> How to make a very basic plot
+</ul>
+
+</p>
+
+<div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">num</span> <span class="hl kwb">=</span> <span class="hl num">5</span>
+<span class="hl std">num</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 5
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">alph</span> <span class="hl kwb">=</span> <span class="hl str">&quot;a&quot;</span>
+<span class="hl std">alph</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;a&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">class</span><span class="hl std">(num)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;numeric&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">class</span><span class="hl std">(alph)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;character&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Variables (like num and alph) can have</span>
+<span class="hl com"># several &quot;types&quot;, e.g. numeric or character</span>
+<span class="hl com"># This can be checked by using the class command.</span>
+
+<span class="hl std">numchar</span> <span class="hl kwb">=</span> <span class="hl str">&quot;5&quot;</span>
+<span class="hl kwd">class</span><span class="hl std">(numchar)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;character&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Some algebra</span>
+<span class="hl com">###############</span>
+
+<span class="hl num">5</span><span class="hl opt">^</span><span class="hl num">2</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 25
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">exp</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">)</span>
+<span class="hl std">x</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 2.718282
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">y</span> <span class="hl kwb">=</span> <span class="hl kwd">log</span><span class="hl std">(x)</span>
+<span class="hl std">y</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 1
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Equality vs. equality, and Boolean variables</span>
+<span class="hl com">##############################################</span>
+
+<span class="hl std">i</span> <span class="hl kwb">=</span> <span class="hl num">1</span>
+<span class="hl std">j</span> <span class="hl kwb">=</span> <span class="hl std">i</span>
+<span class="hl std">i</span> <span class="hl kwb">=</span> <span class="hl num">2</span>
+<span class="hl std">j</span><span class="hl kwb">=</span><span class="hl std">i</span>
+<span class="hl std">j</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 2
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">i</span> <span class="hl kwb">=</span> <span class="hl num">1</span>
+<span class="hl std">i</span> <span class="hl kwb">=</span> <span class="hl std">i</span> <span class="hl opt">+</span> <span class="hl num">1</span>
+
+<span class="hl std">i</span> <span class="hl kwb">&lt;-</span><span class="hl num">1</span>
+<span class="hl std">i</span> <span class="hl kwb">&lt;-</span><span class="hl std">i</span><span class="hl opt">+</span><span class="hl num">1</span>
+<span class="hl std">i</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 2
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># = means assignment, not mathematical equality</span>
+
+<span class="hl std">i</span><span class="hl opt">==</span><span class="hl std">j</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] TRUE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">z</span> <span class="hl kwb">=</span> <span class="hl std">i</span><span class="hl opt">==</span><span class="hl std">j</span>
+<span class="hl std">z</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] TRUE
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">class</span><span class="hl std">(z)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;logical&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Another data type is &quot;logical&quot;, often also </span>
+<span class="hl com"># called Boolean</span>
+
+<span class="hl com"># VECTORS</span>
+<span class="hl com">##########</span>
+
+<span class="hl std">a</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">5</span><span class="hl std">,</span><span class="hl num">90</span><span class="hl std">)</span>
+<span class="hl std">a</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1]  2  5 90
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">b</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;w&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;o&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;w&quot;</span><span class="hl std">)</span>
+<span class="hl std">b</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;w&quot; &quot;o&quot; &quot;w&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(b)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## w o w
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">cat</span><span class="hl std">(b,</span> <span class="hl kwc">sep</span><span class="hl std">=</span><span class="hl str">&quot;&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## wow
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># delete a variable</span>
+<span class="hl kwd">rm</span><span class="hl std">(a, b)</span>
+
+<span class="hl com"># Delete everything in working space</span>
+
+<span class="hl kwd">rm</span><span class="hl std">(</span><span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl kwd">ls</span><span class="hl std">())</span>
+
+<span class="hl com">###############################</span>
+<span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl num">0</span><span class="hl opt">:</span><span class="hl num">10</span>
+<span class="hl std">x</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1]  0  1  2  3  4  5  6  7  8  9 10
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl kwc">from</span> <span class="hl std">=</span> <span class="hl num">0</span><span class="hl std">,</span>
+        <span class="hl kwc">to</span> <span class="hl std">=</span> <span class="hl num">10</span><span class="hl std">,</span>
+        <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl num">0.5</span><span class="hl std">)</span>
+<span class="hl std">x</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1]  0.0  0.5  1.0  1.5  2.0  2.5  3.0  3.5  4.0  4.5  5.0  5.5  6.0  6.5
+## [15]  7.0  7.5  8.0  8.5  9.0  9.5 10.0
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">y</span> <span class="hl kwb">=</span> <span class="hl std">x</span><span class="hl opt">^</span><span class="hl num">2</span>
+<span class="hl std">y</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1]   0.00   0.25   1.00   2.25   4.00   6.25   9.00  12.25  16.00  20.25
+## [11]  25.00  30.25  36.00  42.25  49.00  56.25  64.00  72.25  81.00  90.25
+## [21] 100.00
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(x,y)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl kwd">plot</span><span class="hl std">(x,y,</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;l&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-1-2.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl str">&quot;Semester&quot;</span><span class="hl std">,</span><span class="hl num">6</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;Semester&quot; &quot;Semester&quot; &quot;Semester&quot; &quot;Semester&quot; &quot;Semester&quot; &quot;Semester&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">n</span> <span class="hl kwb">=</span> <span class="hl kwd">as.character</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">6</span><span class="hl std">)</span>
+<span class="hl std">n</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot; &quot;6&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">paste</span><span class="hl std">(n,</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl str">&quot;. Semester&quot;</span><span class="hl std">,</span><span class="hl num">6</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;1 . Semester&quot; &quot;2 . Semester&quot; &quot;3 . Semester&quot; &quot;4 . Semester&quot;
+## [5] &quot;5 . Semester&quot; &quot;6 . Semester&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">paste0</span><span class="hl std">(n,</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl str">&quot;. Semester&quot;</span><span class="hl std">,</span><span class="hl num">6</span><span class="hl std">))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;1. Semester&quot; &quot;2. Semester&quot; &quot;3. Semester&quot; &quot;4. Semester&quot; &quot;5. Semester&quot;
+## [6] &quot;6. Semester&quot;
+</pre></div>
+</div></div>
+
 
 
 
