@@ -519,6 +519,69 @@ end.rcode-->
 
 
 
+<h2 id="lecture1_homesolution">Solution of Home Assignment for Lecture 1</h2>
+
+<p>Here you find the solution for the home assignment of Lecture 1.</p>
+
+<!--begin.rcode
+
+# Homework Lec1
+
+# Plots of exponential function
+##############################
+
+# With a coarse grid
+x = seq(0,50, 5)
+y = exp(x)
+plot(x, y, type = "l")
+
+# With a fine grid
+x = seq(0,50, 0.1)
+y = exp(x)
+plot(x, y, type = "l")
+
+# And with a red curve
+plot(x, y, type = "l", col = "red")
+
+
+# Generating a vector with date information
+
+# There are many possible solutions, here is one:
+
+monthN = c(1:12, 1:12)
+
+years = c(rep("2015", 12), rep("2016", 12))
+
+text = rep(". Monat ", 24)
+
+paste0(monthN, text, years)
+
+end.rcode-->
+
+
+
+<h1 id="lecture2">Lecture 2</h1>
+
+
+
+<table style="width:100%">
+
+	<tr>
+		<th>Slides for Lecture 2</th>
+	</tr>
+
+  <tr>
+    <th>
+		<object width="1200" height="880" data="pdfs/Practical programming - Lecture 2.pdf"></object>
+	</th>
+	</tr>
+
+
+</table>
+
+
+
+
 </div> <!-- end of div scriptText -->
 
 

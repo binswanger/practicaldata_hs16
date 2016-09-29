@@ -638,6 +638,76 @@ $( ".TOCbutton" ).click(function() {
 
 
 
+<h2 id="lecture1_homesolution">Solution of Home Assignment for Lecture 1</h2>
+
+<p>Here you find the solution for the home assignment of Lecture 1.</p>
+
+<div class="chunk" id="unnamed-chunk-2"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Homework Lec1</span>
+
+<span class="hl com"># Plots of exponential function</span>
+<span class="hl com">##############################</span>
+
+<span class="hl com"># With a coarse grid</span>
+<span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">50</span><span class="hl std">,</span> <span class="hl num">5</span><span class="hl std">)</span>
+<span class="hl std">y</span> <span class="hl kwb">=</span> <span class="hl kwd">exp</span><span class="hl std">(x)</span>
+<span class="hl kwd">plot</span><span class="hl std">(x, y,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;l&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-2-1.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com"># With a fine grid</span>
+<span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">seq</span><span class="hl std">(</span><span class="hl num">0</span><span class="hl std">,</span><span class="hl num">50</span><span class="hl std">,</span> <span class="hl num">0.1</span><span class="hl std">)</span>
+<span class="hl std">y</span> <span class="hl kwb">=</span> <span class="hl kwd">exp</span><span class="hl std">(x)</span>
+<span class="hl kwd">plot</span><span class="hl std">(x, y,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;l&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-2-2.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com"># And with a red curve</span>
+<span class="hl kwd">plot</span><span class="hl std">(x, y,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;l&quot;</span><span class="hl std">,</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl str">&quot;red&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-2-3.png" title="plot of chunk unnamed-chunk-2" alt="plot of chunk unnamed-chunk-2" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com"># Generating a vector with date information</span>
+
+<span class="hl com"># There are many possible solutions, here is one:</span>
+
+<span class="hl std">monthN</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">12</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">12</span><span class="hl std">)</span>
+
+<span class="hl std">years</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl str">&quot;2015&quot;</span><span class="hl std">,</span> <span class="hl num">12</span><span class="hl std">),</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl str">&quot;2016&quot;</span><span class="hl std">,</span> <span class="hl num">12</span><span class="hl std">))</span>
+
+<span class="hl std">text</span> <span class="hl kwb">=</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl str">&quot;. Monat &quot;</span><span class="hl std">,</span> <span class="hl num">24</span><span class="hl std">)</span>
+
+<span class="hl kwd">paste0</span><span class="hl std">(monthN, text, years)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1] &quot;1. Monat 2015&quot;  &quot;2. Monat 2015&quot;  &quot;3. Monat 2015&quot;  &quot;4. Monat 2015&quot; 
+##  [5] &quot;5. Monat 2015&quot;  &quot;6. Monat 2015&quot;  &quot;7. Monat 2015&quot;  &quot;8. Monat 2015&quot; 
+##  [9] &quot;9. Monat 2015&quot;  &quot;10. Monat 2015&quot; &quot;11. Monat 2015&quot; &quot;12. Monat 2015&quot;
+## [13] &quot;1. Monat 2016&quot;  &quot;2. Monat 2016&quot;  &quot;3. Monat 2016&quot;  &quot;4. Monat 2016&quot; 
+## [17] &quot;5. Monat 2016&quot;  &quot;6. Monat 2016&quot;  &quot;7. Monat 2016&quot;  &quot;8. Monat 2016&quot; 
+## [21] &quot;9. Monat 2016&quot;  &quot;10. Monat 2016&quot; &quot;11. Monat 2016&quot; &quot;12. Monat 2016&quot;
+</pre></div>
+</div></div>
+
+
+
+<h1 id="lecture2">Lecture 2</h1>
+
+
+
+<table style="width:100%">
+
+	<tr>
+		<th>Slides for Lecture 2</th>
+	</tr>
+
+  <tr>
+    <th>
+		<object width="1200" height="880" data="pdfs/Practical programming - Lecture 2.pdf"></object>
+	</th>
+	</tr>
+
+
+</table>
+
+
+
+
 </div> <!-- end of div scriptText -->
 
 
