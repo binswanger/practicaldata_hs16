@@ -409,7 +409,7 @@ $( ".TOCbutton" ).click(function() {
 
 
 <!-- *********************** INSTALLATION *********************** -->
-<h1 id="installation" class="noBackToTop" style = "padding-top: 20px;">How to Install R and RStudio</h1>
+<h1 id="installation" class="noBackToTop" style = "padding-top: 20px;">How to install R and RStudio</h1>
 
 <p>Below you find two documents that describe in detail how to install R and RStudio on Mac OS X, and on Windows 10. (In Chrome, you may click on the "fit to page" or the zoom buttons to enlarge the documents; in Firefox, you may have to activate Adobe Acrobat; of course, you can easily download the documents onto your hard drive.)</p>
 
@@ -446,6 +446,8 @@ $( ".TOCbutton" ).click(function() {
 
 <h1 id="lecture1" class="noBackToTop">Lecture 1</h1>
 
+<h2 id="lecture1_slides">Slides for Lecture 1</h2>
+
 <p> Below you can find the slides in pdf format for this lecture (which, of course, you can download if you want to make annotations). </p>
 
 
@@ -464,6 +466,9 @@ $( ".TOCbutton" ).click(function() {
 
 
 </table>
+
+
+<h2 id="lecture1_codelive">&ldquo;Live&rdquo; code from Lecture 1</h2>
 
 <p>And here you find the R code that we typed during the first lecture. You will also see the respective output from R (on yellow background). You have seen, for a very first time, the following concepts or objects:
 <ul>
@@ -689,6 +694,8 @@ $( ".TOCbutton" ).click(function() {
 <h1 id="lecture2">Lecture 2</h1>
 
 
+<h2 id="lecture2_slides">Slides for Lecture 2</h2>
+
 
 <table style="width:100%">
 
@@ -704,6 +711,124 @@ $( ".TOCbutton" ).click(function() {
 
 
 </table>
+
+<h2 id="lecture1_codelive">&ldquo;Live&rdquo; code from Lecture 2</h2>
+
+<div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Let's assemble a data.frame (=spreadsheet),</span>
+<span class="hl com"># This can be very big.</span>
+<span class="hl com"># This is the format we will read data into.</span>
+
+<span class="hl std">n</span> <span class="hl kwb">=</span> <span class="hl kwd">as.character</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">6</span><span class="hl std">)</span>
+<span class="hl std">semester</span> <span class="hl kwb">=</span> <span class="hl kwd">paste0</span><span class="hl std">(n,</span> <span class="hl str">&quot;. Semester&quot;</span><span class="hl std">)</span>
+<span class="hl std">semester</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;1. Semester&quot; &quot;2. Semester&quot; &quot;3. Semester&quot; &quot;4. Semester&quot; &quot;5. Semester&quot;
+## [6] &quot;6. Semester&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Number of courses</span>
+<span class="hl std">l</span> <span class="hl kwb">=</span> <span class="hl kwd">length</span><span class="hl std">(semester)</span>
+<span class="hl std">l</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 6
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com">#generate random vector with zeros and ones</span>
+
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl com"># Make sure we all draw the same numbers</span>
+<span class="hl std">randZeroOne</span> <span class="hl kwb">=</span> <span class="hl kwd">rbinom</span><span class="hl std">(l,</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0.5</span><span class="hl std">)</span>
+
+<span class="hl std">nCourses</span> <span class="hl kwb">=</span> <span class="hl num">6</span><span class="hl opt">-</span><span class="hl std">randZeroOne</span>
+<span class="hl std">nCourses</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 6 6 5 5 6 5
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Level of difficulty</span>
+<span class="hl std">diffLevels</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;hard&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;medium&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;easy&quot;</span><span class="hl std">)</span>
+
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">2837482</span><span class="hl std">)</span>
+<span class="hl std">difficulty</span> <span class="hl kwb">=</span> <span class="hl kwd">sample</span><span class="hl std">(diffLevels, l,</span> <span class="hl kwc">replace</span> <span class="hl std">= T)</span>
+<span class="hl std">difficulty</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;medium&quot; &quot;medium&quot; &quot;easy&quot;   &quot;medium&quot; &quot;easy&quot;   &quot;hard&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">class</span><span class="hl std">(difficulty)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;character&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">difficultyFac</span> <span class="hl kwb">=</span> <span class="hl kwd">as.factor</span><span class="hl std">(difficulty)</span>
+<span class="hl std">difficultyFac</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] medium medium easy   medium easy   hard  
+## Levels: easy hard medium
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com">#plot(difficulty) # This does not yield any sensible results</span>
+<span class="hl kwd">plot</span><span class="hl std">(difficultyFac)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com">#number of students</span>
+<span class="hl std">nStud</span> <span class="hl kwb">=</span> <span class="hl kwd">rpois</span><span class="hl std">(l,</span> <span class="hl num">30</span><span class="hl std">)</span>
+<span class="hl std">nStud</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 24 29 32 27 29 24
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">uni</span> <span class="hl kwb">=</span> <span class="hl kwd">rep</span><span class="hl std">(</span><span class="hl str">&quot;HSG&quot;</span><span class="hl std">, l)</span>
+
+<span class="hl std">bachelorProgram</span> <span class="hl kwb">=</span> <span class="hl kwd">data.frame</span><span class="hl std">(</span>
+  <span class="hl std">semester, nCourses, difficultyFac,</span>
+  <span class="hl std">nStud, uni</span>
+<span class="hl std">)</span>
+
+<span class="hl com">############################################</span>
+
+<span class="hl com"># Lists are another data type</span>
+<span class="hl std">L0</span> <span class="hl kwb">=</span> <span class="hl kwd">list</span><span class="hl std">(</span><span class="hl kwc">bachelorProgram</span> <span class="hl std">= bachelorProgram,</span>
+          <span class="hl kwc">difficulty</span> <span class="hl std">= difficultyFac)</span>
+
+<span class="hl std">L0</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## $bachelorProgram
+##      semester nCourses difficultyFac nStud uni
+## 1 1. Semester        6        medium    24 HSG
+## 2 2. Semester        6        medium    29 HSG
+## 3 3. Semester        5          easy    32 HSG
+## 4 4. Semester        5        medium    27 HSG
+## 5 5. Semester        6          easy    29 HSG
+## 6 6. Semester        5          hard    24 HSG
+## 
+## $difficulty
+## [1] medium medium easy   medium easy   hard  
+## Levels: easy hard medium
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">L1</span> <span class="hl kwb">=</span> <span class="hl kwd">list</span><span class="hl std">(L0, bachelorProgram,</span> <span class="hl str">&quot;chaos&quot;</span><span class="hl std">)</span>
+<span class="hl std">L1</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [[1]]
+## [[1]]$bachelorProgram
+##      semester nCourses difficultyFac nStud uni
+## 1 1. Semester        6        medium    24 HSG
+## 2 2. Semester        6        medium    29 HSG
+## 3 3. Semester        5          easy    32 HSG
+## 4 4. Semester        5        medium    27 HSG
+## 5 5. Semester        6          easy    29 HSG
+## 6 6. Semester        5          hard    24 HSG
+## 
+## [[1]]$difficulty
+## [1] medium medium easy   medium easy   hard  
+## Levels: easy hard medium
+## 
+## 
+## [[2]]
+##      semester nCourses difficultyFac nStud uni
+## 1 1. Semester        6        medium    24 HSG
+## 2 2. Semester        6        medium    29 HSG
+## 3 3. Semester        5          easy    32 HSG
+## 4 4. Semester        5        medium    27 HSG
+## 5 5. Semester        6          easy    29 HSG
+## 6 6. Semester        5          hard    24 HSG
+## 
+## [[3]]
+## [1] &quot;chaos&quot;
+</pre></div>
+</div></div>
 
 
 

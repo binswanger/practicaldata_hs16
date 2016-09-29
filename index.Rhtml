@@ -347,7 +347,7 @@ $( ".TOCbutton" ).click(function() {
 
 
 <!-- *********************** INSTALLATION *********************** -->
-<h1 id="installation" class="noBackToTop" style = "padding-top: 20px;">How to Install R and RStudio</h1>
+<h1 id="installation" class="noBackToTop" style = "padding-top: 20px;">How to install R and RStudio</h1>
 
 <p>Below you find two documents that describe in detail how to install R and RStudio on Mac OS X, and on Windows 10. (In Chrome, you may click on the "fit to page" or the zoom buttons to enlarge the documents; in Firefox, you may have to activate Adobe Acrobat; of course, you can easily download the documents onto your hard drive.)</p>
 
@@ -384,6 +384,8 @@ $( ".TOCbutton" ).click(function() {
 
 <h1 id="lecture1" class="noBackToTop">Lecture 1</h1>
 
+<h2 id="lecture1_slides">Slides for Lecture 1</h2>
+
 <p> Below you can find the slides in pdf format for this lecture (which, of course, you can download if you want to make annotations). </p>
 
 
@@ -402,6 +404,9 @@ $( ".TOCbutton" ).click(function() {
 
 
 </table>
+
+
+<h2 id="lecture1_codelive">&ldquo;Live&rdquo; code from Lecture 1</h2>
 
 <p>And here you find the R code that we typed during the first lecture. You will also see the respective output from R (on yellow background). You have seen, for a very first time, the following concepts or objects:
 <ul>
@@ -563,6 +568,8 @@ end.rcode-->
 <h1 id="lecture2">Lecture 2</h1>
 
 
+<h2 id="lecture2_slides">Slides for Lecture 2</h2>
+
 
 <table style="width:100%">
 
@@ -578,6 +585,72 @@ end.rcode-->
 
 
 </table>
+
+<h2 id="lecture1_codelive">&ldquo;Live&rdquo; code from Lecture 2</h2>
+
+<!--begin.rcode
+
+
+# Let's assemble a data.frame (=spreadsheet),
+# This can be very big.
+# This is the format we will read data into.
+
+n = as.character(1:6)
+semester = paste0(n, ". Semester")
+semester
+
+# Number of courses
+l = length(semester)
+l
+
+#generate random vector with zeros and ones
+
+set.seed(1) # Make sure we all draw the same numbers
+randZeroOne = rbinom(l, 1, 0.5)
+
+nCourses = 6-randZeroOne
+nCourses
+
+# Level of difficulty
+diffLevels = c("hard", "medium", "easy")
+
+set.seed(2837482)
+difficulty = sample(diffLevels, l, replace = T)
+difficulty
+
+class(difficulty)
+
+difficultyFac = as.factor(difficulty)
+difficultyFac
+
+#plot(difficulty) # This does not yield any sensible results
+plot(difficultyFac)
+
+#number of students
+nStud = rpois(l, 30)
+nStud
+
+
+uni = rep("HSG", l)
+
+bachelorProgram = data.frame(
+  semester, nCourses, difficultyFac, 
+  nStud, uni
+)
+
+############################################
+
+# Lists are another data type
+L0 = list(bachelorProgram = bachelorProgram,
+          difficulty = difficultyFac)
+
+L0
+
+L1 = list(L0, bachelorProgram, "chaos")
+L1
+
+
+end.rcode-->
 
 
 
