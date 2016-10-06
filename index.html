@@ -446,7 +446,7 @@ $( ".TOCbutton" ).click(function() {
 
 <h1 id="lecture1" class="noBackToTop">Lecture 1</h1>
 
-<h2 id="lecture1_slides">Slides for Lecture 1</h2>
+<h2 id="lecture1_slides" class="noBackToTop">Slides for Lecture 1</h2>
 
 <p> Below you can find the slides in pdf format for this lecture (which, of course, you can download if you want to make annotations). </p>
 
@@ -481,6 +481,8 @@ $( ".TOCbutton" ).click(function() {
 </ul>
 
 </p>
+
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec1_live.pdf" target = "_blank">pdf</a>.</p>
 
 <div class="chunk" id="unnamed-chunk-1"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">num</span> <span class="hl kwb">=</span> <span class="hl num">5</span>
 <span class="hl std">num</span>
@@ -694,7 +696,7 @@ $( ".TOCbutton" ).click(function() {
 <h1 id="lecture2">Lecture 2</h1>
 
 
-<h2 id="lecture2_slides">Slides for Lecture 2</h2>
+<h2 id="lecture2_slides" class="noBackToTop">Slides for Lecture 2</h2>
 
 
 <table style="width:100%">
@@ -712,7 +714,9 @@ $( ".TOCbutton" ).click(function() {
 
 </table>
 
-<h2 id="lecture1_codelive">&ldquo;Live&rdquo; code from Lecture 2</h2>
+<h2 id="lecture2_codelive">&ldquo;Live&rdquo; Code from Lecture 2</h2>
+
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec2_live.pdf" target = "_blank">pdf</a></p>.
 
 <div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Let's assemble a data.frame (=spreadsheet),</span>
 <span class="hl com"># This can be very big.</span>
@@ -830,6 +834,73 @@ $( ".TOCbutton" ).click(function() {
 </pre></div>
 </div></div>
 
+<h2 id="lecture2_homesolution">Solution of Home Assignment for Lecture 2</h2>
+
+
+<div class="chunk" id="unnamed-chunk-4"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Question 1</span>
+
+<span class="hl std">id</span> <span class="hl kwb">=</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">1000</span>
+
+<span class="hl com"># Question 2</span>
+
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">8763</span><span class="hl std">)</span>
+<span class="hl std">gender</span> <span class="hl kwb">=</span> <span class="hl kwd">rbinom</span><span class="hl std">(</span><span class="hl num">1000</span><span class="hl std">,</span><span class="hl num">1</span><span class="hl std">,</span> <span class="hl num">0.5</span><span class="hl std">)</span>
+<span class="hl std">gender</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##    [1] 0 0 1 0 1 0 0 1 0 0 0 1 0 0 0 0 1 1 1 1 1 1 0 1 1 1 1 0 0 1 1 1 1 0
+##   [35] 0 1 1 0 1 0 1 0 0 1 0 0 1 1 1 1 1 0 0 0 0 1 1 0 0 0 1 1 0 1 0 0 0 1
+##   [69] 1 0 1 1 0 1 0 1 1 1 0 0 1 0 0 0 0 0 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 0
+##  [103] 0 1 0 1 1 1 1 0 0 0 1 0 0 1 0 0 1 1 0 1 0 0 0 1 1 1 0 1 1 1 0 0 1 0
+##  [137] 0 1 1 0 0 1 1 0 1 0 0 0 0 0 0 0 1 1 1 0 1 0 0 0 0 1 1 1 0 0 1 0 0 1
+##  [171] 0 0 0 0 0 1 1 1 0 0 1 1 0 1 1 0 0 1 0 1 1 0 0 0 1 1 0 1 1 0 1 0 1 0
+##  [205] 1 1 0 0 0 1 0 0 0 1 0 1 0 1 1 0 0 1 0 1 0 1 1 1 1 0 0 0 0 1 1 1 0 0
+##  [239] 0 0 1 1 1 0 1 1 0 0 1 0 0 1 0 0 1 1 0 0 0 1 0 0 0 0 0 0 1 1 0 0 1 0
+##  [273] 1 1 0 1 0 1 1 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 0 0 0 1 1 1
+##  [307] 0 0 1 0 1 1 0 1 0 0 1 0 1 0 0 0 1 0 0 1 0 1 0 0 1 1 0 0 0 0 0 1 1 1
+##  [341] 0 1 0 1 0 1 1 0 1 1 1 0 1 0 0 0 0 0 0 1 0 0 1 1 1 1 0 1 1 0 1 1 0 1
+##  [375] 1 1 1 1 1 1 1 0 1 0 0 1 0 0 0 1 0 1 1 1 1 1 1 0 1 0 0 0 1 1 0 1 1 1
+##  [409] 1 1 1 1 1 0 0 0 1 0 0 0 1 0 0 1 1 1 0 0 0 1 1 1 1 1 1 1 1 0 0 0 0 1
+##  [443] 0 1 0 0 1 1 1 1 0 1 1 0 1 1 0 1 0 0 0 0 1 1 1 1 1 0 1 0 1 1 0 1 1 0
+##  [477] 1 1 0 0 1 1 0 1 1 1 1 1 0 0 1 0 0 0 0 0 0 0 1 0 1 0 1 1 1 0 0 0 1 1
+##  [511] 0 0 1 0 1 0 1 0 1 0 1 0 0 1 0 1 1 0 0 0 0 1 1 1 1 1 0 0 1 1 0 0 0 1
+##  [545] 1 0 0 1 0 1 0 0 1 0 1 1 0 0 0 1 0 1 1 0 1 0 1 0 1 1 1 0 0 0 0 1 1 1
+##  [579] 0 0 0 0 0 0 1 0 1 0 1 1 0 0 0 1 1 0 1 0 0 1 0 0 1 0 0 1 1 0 1 1 0 0
+##  [613] 1 1 1 0 0 1 1 0 0 0 1 1 1 0 0 0 0 0 1 1 1 1 0 1 1 1 1 1 1 0 0 1 0 0
+##  [647] 0 1 1 1 1 0 0 1 1 1 0 1 1 1 0 0 0 0 0 1 1 0 1 1 1 1 0 0 0 0 1 1 0 0
+##  [681] 1 0 1 0 0 0 0 0 1 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 1 0 0 1 0 0 0 1 1
+##  [715] 0 0 0 0 0 0 0 0 0 1 1 0 0 0 1 0 0 1 1 1 1 1 0 1 1 0 1 1 1 0 1 0 1 0
+##  [749] 1 1 0 1 1 0 0 0 1 0 1 1 1 0 0 0 0 1 0 0 1 1 0 0 1 0 1 0 1 0 0 1 1 0
+##  [783] 0 0 1 1 0 1 0 0 0 1 0 1 1 1 1 0 1 0 0 0 1 1 1 1 0 1 0 1 0 1 0 0 0 0
+##  [817] 0 1 1 0 1 1 0 0 1 1 1 0 1 1 0 0 0 1 1 1 1 0 0 0 0 1 0 1 1 0 1 1 1 1
+##  [851] 0 1 0 1 1 0 1 0 1 0 1 0 1 0 0 1 1 1 1 1 1 1 1 0 1 0 0 1 0 1 0 1 1 0
+##  [885] 0 0 1 0 1 1 0 1 0 0 0 0 0 1 0 0 1 0 1 0 0 0 1 1 1 1 0 0 0 0 1 1 1 1
+##  [919] 1 0 0 0 0 0 0 0 1 1 1 0 0 0 1 1 1 0 1 0 1 0 1 1 0 0 0 0 0 1 0 1 0 0
+##  [953] 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0 1 1 0 1 0 1 1 0 0 0 0 1 1 0
+##  [987] 1 0 1 0 0 0 0 1 0 0 1 0 1 1
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Question 3</span>
+
+<span class="hl kwd">set.seed</span><span class="hl std">(</span><span class="hl num">8763</span><span class="hl std">)</span>
+<span class="hl std">politViews</span> <span class="hl kwb">=</span> <span class="hl kwd">rnorm</span><span class="hl std">(</span><span class="hl num">1000</span><span class="hl std">,</span> <span class="hl num">5</span><span class="hl std">,</span> <span class="hl num">1</span><span class="hl std">)</span>
+
+<span class="hl kwd">hist</span><span class="hl std">(politViews)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl kwd">mean</span><span class="hl std">(politViews)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 5.026438
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Question 4</span>
+
+<span class="hl std">characTypes</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;introvert&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;extrovert&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;nerdy&quot;</span><span class="hl std">)</span>
+
+<span class="hl std">charac</span> <span class="hl kwb">=</span> <span class="hl kwd">sample</span><span class="hl std">(characTypes,</span> <span class="hl num">1000</span><span class="hl std">,</span> <span class="hl kwc">replace</span> <span class="hl std">= T)</span>
+
+<span class="hl com"># Question 5</span>
+
+<span class="hl std">data</span> <span class="hl kwb">=</span> <span class="hl kwd">data.frame</span><span class="hl std">(id, gender, politViews, charac)</span>
+</pre></div>
+</div></div>
 
 
 

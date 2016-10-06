@@ -384,7 +384,7 @@ $( ".TOCbutton" ).click(function() {
 
 <h1 id="lecture1" class="noBackToTop">Lecture 1</h1>
 
-<h2 id="lecture1_slides">Slides for Lecture 1</h2>
+<h2 id="lecture1_slides" class="noBackToTop">Slides for Lecture 1</h2>
 
 <p> Below you can find the slides in pdf format for this lecture (which, of course, you can download if you want to make annotations). </p>
 
@@ -419,6 +419,8 @@ $( ".TOCbutton" ).click(function() {
 </ul>
 
 </p>
+
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec1_live.pdf" target = "_blank">pdf</a>.</p>
 
 <!--begin.rcode
 
@@ -568,7 +570,7 @@ end.rcode-->
 <h1 id="lecture2">Lecture 2</h1>
 
 
-<h2 id="lecture2_slides">Slides for Lecture 2</h2>
+<h2 id="lecture2_slides" class="noBackToTop">Slides for Lecture 2</h2>
 
 
 <table style="width:100%">
@@ -586,7 +588,9 @@ end.rcode-->
 
 </table>
 
-<h2 id="lecture1_codelive">&ldquo;Live&rdquo; code from Lecture 2</h2>
+<h2 id="lecture2_codelive">&ldquo;Live&rdquo; Code from Lecture 2</h2>
+
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec2_live.pdf" target = "_blank">pdf</a></p>.
 
 <!--begin.rcode
 
@@ -652,6 +656,44 @@ L1
 
 end.rcode-->
 
+<h2 id="lecture2_homesolution">Solution of Home Assignment for Lecture 2</h2>
+
+
+<!--begin.rcode
+
+
+# Question 1
+
+id = 1:1000
+
+# Question 2
+
+set.seed(8763)
+gender = rbinom(1000,1, 0.5)
+gender
+
+# Question 3
+
+set.seed(8763)
+politViews = rnorm(1000, 5, 1)
+
+hist(politViews)
+
+mean(politViews)
+
+# Question 4
+
+characTypes = c("introvert", "extrovert", "nerdy")
+
+charac = sample(characTypes, 1000, replace = T)
+
+# Question 5
+
+data = data.frame(id, gender, politViews, charac)
+
+
+
+end.rcode-->
 
 
 
