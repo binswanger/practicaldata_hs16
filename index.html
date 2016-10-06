@@ -716,7 +716,7 @@ $( ".TOCbutton" ).click(function() {
 
 <h2 id="lecture2_codelive">&ldquo;Live&rdquo; Code from Lecture 2</h2>
 
-<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec2_live.pdf" target = "_blank">pdf</a></p>.
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec2_live.pdf" target = "_blank">pdf</a>.</p>
 
 <div class="chunk" id="unnamed-chunk-3"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># Let's assemble a data.frame (=spreadsheet),</span>
 <span class="hl com"># This can be very big.</span>
@@ -899,6 +899,178 @@ $( ".TOCbutton" ).click(function() {
 <span class="hl com"># Question 5</span>
 
 <span class="hl std">data</span> <span class="hl kwb">=</span> <span class="hl kwd">data.frame</span><span class="hl std">(id, gender, politViews, charac)</span>
+</pre></div>
+</div></div>
+
+
+
+
+<!-- ####################################################### -->
+
+
+
+<h1 id="lecture3">Lecture 3</h1>
+
+
+
+<h2 id="lecture3_codelive">&ldquo;Live&rdquo; Code from Lecture 3</h2>
+
+
+<p>Please note that the last bits in the &ldquo;live&rdquo; code (under &ldquo;Optional Arguments&rdquo;) is incomplete. We will finish this during Lecture 4. If you prefer the &ldquo;live&rdquo; code as pdf, you can get it <a href="pdfs/Lec3_live.pdf" target = "_blank">here</a>.</p>
+
+<div class="chunk" id="unnamed-chunk-5"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">#############</span>
+<span class="hl com"># Functions #</span>
+<span class="hl com">#############</span>
+
+<span class="hl std">sayHello</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">name</span><span class="hl std">){</span>
+  <span class="hl kwd">paste0</span><span class="hl std">(</span><span class="hl str">&quot;Hello &quot;</span><span class="hl std">, name,</span>
+         <span class="hl str">&quot;, how are you doing today?&quot;</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+
+<span class="hl kwd">sayHello</span><span class="hl std">(</span><span class="hl str">&quot;Sabrina&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;Hello Sabrina, how are you doing today?&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">sayHello</span><span class="hl std">(</span><span class="hl str">&quot;Christian&quot;</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;Hello Christian, how are you doing today?&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">LETTERS</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1] &quot;A&quot; &quot;B&quot; &quot;C&quot; &quot;D&quot; &quot;E&quot; &quot;F&quot; &quot;G&quot; &quot;H&quot; &quot;I&quot; &quot;J&quot; &quot;K&quot; &quot;L&quot; &quot;M&quot; &quot;N&quot; &quot;O&quot; &quot;P&quot; &quot;Q&quot;
+## [18] &quot;R&quot; &quot;S&quot; &quot;T&quot; &quot;U&quot; &quot;V&quot; &quot;W&quot; &quot;X&quot; &quot;Y&quot; &quot;Z&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">sayHello</span><span class="hl std">(LETTERS)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1] &quot;Hello A, how are you doing today?&quot;
+##  [2] &quot;Hello B, how are you doing today?&quot;
+##  [3] &quot;Hello C, how are you doing today?&quot;
+##  [4] &quot;Hello D, how are you doing today?&quot;
+##  [5] &quot;Hello E, how are you doing today?&quot;
+##  [6] &quot;Hello F, how are you doing today?&quot;
+##  [7] &quot;Hello G, how are you doing today?&quot;
+##  [8] &quot;Hello H, how are you doing today?&quot;
+##  [9] &quot;Hello I, how are you doing today?&quot;
+## [10] &quot;Hello J, how are you doing today?&quot;
+## [11] &quot;Hello K, how are you doing today?&quot;
+## [12] &quot;Hello L, how are you doing today?&quot;
+## [13] &quot;Hello M, how are you doing today?&quot;
+## [14] &quot;Hello N, how are you doing today?&quot;
+## [15] &quot;Hello O, how are you doing today?&quot;
+## [16] &quot;Hello P, how are you doing today?&quot;
+## [17] &quot;Hello Q, how are you doing today?&quot;
+## [18] &quot;Hello R, how are you doing today?&quot;
+## [19] &quot;Hello S, how are you doing today?&quot;
+## [20] &quot;Hello T, how are you doing today?&quot;
+## [21] &quot;Hello U, how are you doing today?&quot;
+## [22] &quot;Hello V, how are you doing today?&quot;
+## [23] &quot;Hello W, how are you doing today?&quot;
+## [24] &quot;Hello X, how are you doing today?&quot;
+## [25] &quot;Hello Y, how are you doing today?&quot;
+## [26] &quot;Hello Z, how are you doing today?&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># A function that calculates saving needs for retirement</span>
+<span class="hl com">########################################################</span>
+
+<span class="hl com"># The input values for the calculation</span>
+<span class="hl std">spending</span> <span class="hl kwb">=</span> <span class="hl num">5000</span>
+<span class="hl std">interestRate</span> <span class="hl kwb">=</span> <span class="hl num">4</span>
+<span class="hl std">T</span> <span class="hl kwb">=</span> <span class="hl num">30</span>
+
+<span class="hl com"># The stupid way to program... </span>
+<span class="hl com"># (this does not even deserve the name &quot;programming&quot;)</span>
+
+<span class="hl std">pvSpending</span> <span class="hl kwb">=</span> <span class="hl num">5000</span><span class="hl opt">/</span><span class="hl num">1.04</span><span class="hl opt">^</span><span class="hl num">30</span>
+<span class="hl std">pvSpending</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 1541.593
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># A little smarter with using variables</span>
+
+<span class="hl std">pvSpending</span> <span class="hl kwb">=</span> <span class="hl std">spending</span><span class="hl opt">/</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">+</span><span class="hl std">interestRate</span><span class="hl opt">/</span><span class="hl num">100</span><span class="hl std">)</span><span class="hl opt">^</span><span class="hl std">T</span>
+
+<span class="hl com"># The smartest way: Using functions</span>
+
+<span class="hl std">saveFun</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">,</span> <span class="hl kwc">r</span><span class="hl std">,</span> <span class="hl kwc">T</span><span class="hl std">){</span>
+  <span class="hl kwd">round</span><span class="hl std">(  x</span><span class="hl opt">/</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">+</span><span class="hl std">r</span><span class="hl opt">/</span><span class="hl num">100</span><span class="hl std">)</span><span class="hl opt">^</span><span class="hl std">T  )</span>
+<span class="hl std">}</span>
+<span class="hl kwd">saveFun</span><span class="hl std">(</span><span class="hl num">5000</span><span class="hl std">,</span> <span class="hl num">0</span><span class="hl std">,</span> <span class="hl num">30</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 5000
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Label arguments</span>
+<span class="hl com">#################</span>
+
+<span class="hl std">saveFun</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">spending</span><span class="hl std">,</span> <span class="hl kwc">interestRate</span><span class="hl std">,</span>
+                   <span class="hl kwc">horizon</span><span class="hl std">){</span>
+    <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl std">spending</span>
+    <span class="hl std">r</span> <span class="hl kwb">=</span> <span class="hl std">interestRate</span>
+    <span class="hl std">T</span> <span class="hl kwb">=</span> <span class="hl std">horizon</span>
+  <span class="hl kwd">round</span><span class="hl std">(  x</span><span class="hl opt">/</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">+</span><span class="hl std">r</span><span class="hl opt">/</span><span class="hl num">100</span><span class="hl std">)</span><span class="hl opt">^</span><span class="hl std">T  )</span>
+<span class="hl std">}</span>
+
+<span class="hl kwd">saveFun</span><span class="hl std">(</span><span class="hl kwc">spending</span> <span class="hl std">=</span> <span class="hl num">5000</span><span class="hl std">,</span> <span class="hl kwc">interestRate</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">,</span>
+        <span class="hl kwc">horizon</span> <span class="hl std">=</span> <span class="hl num">30</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 1542
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">saveFun</span><span class="hl std">(</span><span class="hl kwc">horizon</span> <span class="hl std">=</span> <span class="hl num">30</span><span class="hl std">,</span> <span class="hl kwc">spending</span> <span class="hl std">=</span> <span class="hl num">5000</span><span class="hl std">,</span>
+        <span class="hl kwc">interestRate</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 1542
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">saveFun</span><span class="hl std">(</span><span class="hl num">30</span><span class="hl std">,</span> <span class="hl num">5000</span><span class="hl std">,</span> <span class="hl num">4</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 0
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># With labels you can change the order of the arguments,</span>
+<span class="hl com"># without labels, you cannot.</span>
+
+<span class="hl com"># Default values</span>
+<span class="hl com">#################</span>
+
+<span class="hl std">saveFun</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">spending</span> <span class="hl std">=</span> <span class="hl num">5000</span><span class="hl std">,</span>
+                   <span class="hl kwc">interestRate</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">,</span>
+                   <span class="hl kwc">horizon</span> <span class="hl std">=</span> <span class="hl num">30</span><span class="hl std">){</span>
+  <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl std">spending</span>
+  <span class="hl std">r</span> <span class="hl kwb">=</span> <span class="hl std">interestRate</span>
+  <span class="hl std">T</span> <span class="hl kwb">=</span> <span class="hl std">horizon</span>
+  <span class="hl kwd">round</span><span class="hl std">(  x</span><span class="hl opt">/</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">+</span><span class="hl std">r</span><span class="hl opt">/</span><span class="hl num">100</span><span class="hl std">)</span><span class="hl opt">^</span><span class="hl std">T  )</span>
+<span class="hl std">}</span>
+
+<span class="hl kwd">saveFun</span><span class="hl std">()</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 1542
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">saveFun</span><span class="hl std">(</span><span class="hl kwc">spending</span> <span class="hl std">=</span> <span class="hl num">1000</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 308
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Optional arguments</span>
+<span class="hl com">####################</span>
+
+<span class="hl com"># !!! WARNING: THE CODE BELOW IS INCOMPLETE, </span>
+<span class="hl com">#     WE WILL FINISH THIS THE NEXT TIME!!!!</span>
+
+<span class="hl std">saveFun</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">spending</span> <span class="hl std">=</span> <span class="hl num">5000</span><span class="hl std">,</span>
+                   <span class="hl kwc">interestRate</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">,</span>
+                   <span class="hl kwc">horizon</span> <span class="hl std">=</span> <span class="hl num">30</span><span class="hl std">,</span>
+                   <span class="hl kwc">get.out.as.text</span> <span class="hl std">=</span> <span class="hl kwa">NULL</span><span class="hl std">){</span>
+  <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl std">spending</span>
+  <span class="hl std">r</span> <span class="hl kwb">=</span> <span class="hl std">interestRate</span>
+  <span class="hl std">T</span> <span class="hl kwb">=</span> <span class="hl std">horizon</span>
+  <span class="hl std">out</span> <span class="hl kwb">=</span> <span class="hl kwd">round</span><span class="hl std">(  x</span><span class="hl opt">/</span><span class="hl std">(</span><span class="hl num">1</span><span class="hl opt">+</span><span class="hl std">r</span><span class="hl opt">/</span><span class="hl num">100</span><span class="hl std">)</span><span class="hl opt">^</span><span class="hl std">T  )</span>
+
+  <span class="hl kwa">if</span><span class="hl std">(</span>  <span class="hl opt">!</span><span class="hl kwd">is.null</span><span class="hl std">(get.out.as.text)  ){</span>
+    <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl kwd">sprintf</span><span class="hl std">(</span><span class="hl str">&quot;If you want to spend %s after %s years
+and the interest rate is %s percent, 
+you have to save %s.&quot;</span><span class="hl std">, x, T, r, out))</span>
+  <span class="hl std">}</span>
+
+
+<span class="hl std">}</span>
+
+<span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl num">5000</span><span class="hl std">; T</span> <span class="hl kwb">=</span> <span class="hl num">30</span><span class="hl std">; r</span> <span class="hl kwb">=</span> <span class="hl num">4</span>
 </pre></div>
 </div></div>
 
