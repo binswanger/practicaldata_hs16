@@ -590,7 +590,7 @@ end.rcode-->
 
 <h2 id="lecture2_codelive">&ldquo;Live&rdquo; Code from Lecture 2</h2>
 
-<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec2_live.pdf" target = "_blank">pdf</a></p>.
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec2_live.pdf" target = "_blank">pdf</a>.</p>
 
 <!--begin.rcode
 
@@ -694,6 +694,181 @@ data = data.frame(id, gender, politViews, charac)
 
 
 end.rcode-->
+
+
+
+
+<!-- ####################################################### -->
+
+
+
+<h1 id="lecture3">Lecture 3</h1>
+
+
+
+<h2 id="lecture3_codelive" class="noBackToTop">&ldquo;Live&rdquo; Code from Lecture 3</h2>
+
+
+<p>Please note that the last bits in the &ldquo;live&rdquo; code (under &ldquo;Optional Arguments&rdquo;) is incomplete. We will finish this during Lecture 4. If you prefer the &ldquo;live&rdquo; code as pdf, you can get it <a href="pdfs/Lec3_live.pdf" target = "_blank">here</a>.</p>
+
+<!--begin.rcode
+
+#############
+# Functions #
+#############
+
+sayHello = function(name){
+  paste0("Hello ", name, 
+         ", how are you doing today?")
+}
+
+sayHello("Sabrina")
+sayHello("Christian")
+
+LETTERS
+
+sayHello(LETTERS)
+
+
+
+
+# A function that calculates saving needs for retirement
+########################################################
+
+# The input values for the calculation
+spending = 5000
+interestRate = 4
+T = 30
+
+# The stupid way to program... 
+# (this does not even deserve the name "programming")
+
+pvSpending = 5000/1.04^30
+pvSpending
+
+# A little smarter with using variables
+
+pvSpending = spending/(1+interestRate/100)^T
+
+# The smartest way: Using functions
+
+saveFun = function(x, r, T){
+  round(  x/(1+r/100)^T  )
+}
+saveFun(5000, 0, 30)
+
+# Label arguments
+#################
+
+saveFun = function(spending, interestRate,
+                   horizon){
+    x = spending
+    r = interestRate
+    T = horizon
+  round(  x/(1+r/100)^T  )
+}
+
+saveFun(spending = 5000, interestRate = 4,
+        horizon = 30)
+
+saveFun(horizon = 30, spending = 5000,
+        interestRate = 4)
+
+saveFun(30, 5000, 4)
+
+# With labels you can change the order of the arguments,
+# without labels, you cannot.
+
+# Default values
+#################
+
+saveFun = function(spending = 5000, 
+                   interestRate = 4,
+                   horizon = 30){
+  x = spending
+  r = interestRate
+  T = horizon
+  round(  x/(1+r/100)^T  )
+}
+
+saveFun()
+
+saveFun(spending = 1000)
+
+
+# Optional arguments
+####################
+
+# !!! WARNING: THE CODE BELOW IS INCOMPLETE, 
+#     WE WILL FINISH THIS THE NEXT TIME!!!!
+
+saveFun = function(spending = 5000, 
+                   interestRate = 4,
+                   horizon = 30,
+                   get.out.as.text = NULL){
+  x = spending
+  r = interestRate
+  T = horizon
+  out = round(  x/(1+r/100)^T  )
+  
+  if(  !is.null(get.out.as.text)  ){
+    cat(sprintf("If you want to spend %s after %s years
+and the interest rate is %s percent, 
+you have to save %s.", x, T, r, out))
+  }
+  
+  
+}
+
+x = 5000; T = 30; r = 4
+
+
+
+
+
+end.rcode-->
+
+
+
+<h2 id="lecture3_homesolution">Solution of Home Assignment for Lecture 3</h2>
+
+<p>The suggested solution for the home assignment of Lecture 3 is available in <a href = "Homework_Lec3.R" download>this script file</a>. Note that there are many other possible solutions, some shorter and more elegant, some a little longer.</p>
+
+<!-- ####################################################### -->
+
+
+
+<h1 id="lecture4">Lecture 4</h1>
+
+<p>In this lecture, we start with working on real data. In particular, we will consider data on Swiss Franc exchange rates and how the latter relate to Swiss imports and exports. You need to download the data from the website of the Swiss National Bank to your device before the lecture. You can find the instructions how to do so in <a href = "pdfs/Downloading SNB data and reading CSV files.pdf" target= "_blank">this document</a>.
+</p>
+
+<p>Just in case something really went wrong with downloading the data from the website of the Swiss National Bank, or with reading the data into R, you can get them 
+directly in <code>RData</code> format <a href = "data/rawXrates.RData" download>here</a>. Do not open this data by double clicking. Rather copy it into the folder where you have the other data files for this course, and then use the <code>load()</code> command from within an R script.</p>
+
+
+
+
+<p>In order to progress a little faster during class, I already prepared two R scripts:
+<ul>
+<li>Completing the savFun function from last time, with an optional argument <a href = "Lec4_forClass1.R" download>[download]</a>
+<li>Reading data into R and working with them<a href = "Lec4_forClass2.R" download> [download]</a>
+</ul>
+</p>
+
+
+
+<h2 id="lecture4_homeassignment">Data for Home Assignment for Lecture 4</h2>
+
+<p>Try to get the following data &ldquo;clean&rdquo; into Excel:
+<ul>
+<li><a href = "data/toImport1.csv" download>Data set 1</a>
+<li><a href = "data/toImport2.csv" download>Data set 2</a>
+<li><a href = "data/toImport3.csv" download>Data set 3</a>
+</ul>
+</p>
+
+<p>See StudyNet under &ldquo;Abgabe&rdquo; for further instructions.</p>
 
 
 
