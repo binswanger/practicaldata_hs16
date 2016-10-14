@@ -858,6 +858,230 @@ directly in <code>RData</code> format <a href = "data/rawXrates.RData" download>
 
 
 
+<h2 id="lecture4_codelive" >&ldquo;Live&rdquo; Code from Lecture 4</h2>
+
+<p>If you prefer the &ldquo;live&rdquo; code as pdf, you can get it <a href="pdfs/Lec4_live.pdf" target = "_blank">here</a>.</p>
+
+
+<!--begin.rcode
+
+
+############################################
+# LECTURE 4, Part 1: Completing function   #
+# from last time with an optional argument #
+############################################
+
+# During Lecture 3 we worked on a function with an optional
+# or "NULL" argument: if the argument get.out.as.text is not NULL,
+# then the function saveFun would get the output as text.
+
+# In this function, we introduced two new R functions:
+# sprintf, and the conditional.
+
+
+# sprintf
+#########
+
+
+x = 5000; T = 30; r = 4
+out = round(  x/(1+r/100)^T  )
+# Note that you can run several commands on one line, 
+# separated by semicolons
+
+
+sprintf("If you want to spend %s after %s years
+and the interest rate is %s percent, 
+you have to save %s.", x, T, r, out)
+
+
+# Note: The s in "%s" means "string". See Section 8.2 in 
+# "R for Everyone".
+
+# If you want get rid of the editing symbols like "" or \n, you have
+# to use the cat function
+
+
+cat(sprintf("If you want\t to spend %s\n after %s years
+and the\n interest\t rate is %s percent, 
+you have to save %s.", x, T, r, out))
+
+
+
+
+# Conditionals
+##############
+
+# See Chapter 9 in "R for Everyone"
+
+arg = "yes"
+
+if (arg ==  "no"){
+  print("I have nothing to say :-(")
+}
+
+
+# So what if arg = "yes"?
+
+arg = "yes"
+
+if (arg ==  "no"){
+  print("I have nothing to say :-(")
+}
+
+if (arg ==  "yes"){
+  print("I have nothing to say :-)")
+}
+
+
+arg = "no"
+
+if (arg ==  "no"){
+  print("I have nothing to say :-(")
+} else if (arg=="yes"){
+  print(":-))")
+}
+    
+# Be very careful with the positions of the curly brackets
+# If they are not in the right position, you will get
+# an error. This can sometimes be quite tricky.
+
+
+# Now let's make a function of this
+
+saySomething = function(arg){
+  
+  #copy/paste from above
+  if (arg ==  "no"){
+    print("I have nothing to say :-(")
+  } else if (arg=="yes"){
+    print(":-))")
+  }
+}
+
+saySomething("no")
+saySomething("yes")
+
+
+# Now we go back to our savings function
+########################################
+
+a = NULL
+b = "yes"
+is.null(a)
+is.null(b)
+
+get.out.as.text = "yes"
+
+saveFun = function(spending = 5000, 
+                   interestRate = 4,
+                   horizon = 30,
+                   get.out.as.text = NULL){
+  x = spending
+  r = interestRate
+  T = horizon
+  out = round(  x/(1+r/100)^T  )
+  
+  if (is.null(get.out.as.text)){
+    return(out)
+    # everything in a function that comes after return is not executed
+    # if return is executed...
+  
+  } else if (get.out.as.text == "yes"){
+    cat(sprintf("If you want to spend %s after %s years
+and the interest rate is %s percent, 
+you have to save %s!", x, T, r, out))
+  }
+}
+  
+saveFun()
+saveFun(get.out.as.text = "yes")
+
+saveFun(spending = 5000, 
+        interestRate = 1,
+        horizon = 30,
+        get.out.as.text = "yes")
+
+  
+saveFun(spending = 5000, 
+        interestRate = -0.5,
+        horizon = 30)
+
+
+
+
+
+###########################################################################
+
+###########################################################################
+
+
+####################################################
+# LECTURE 4, Part 2: Reading data from csv files   #
+####################################################
+
+
+
+
+# See Section 6.1 and 5.1 in "R for Everyone". 
+
+rm(list = ls())
+
+# Set the working directory to the folder
+# where you have the csv files from the SNB
+
+
+# On a Mac it may look like this
+#setwd("/Users/Thomas/Dropbox/Programmierkurs/Data")
+
+# On Windows it may look like this
+#setwd("D:/Programmierkurs/Data")
+
+# Note the forward slashes in the directory!!!!!
+
+
+# Load the data... Which one
+# works for you?
+
+rawData = read.csv(file = "data/SNB Xrates downloaded.csv")
+
+rawXrates = read.csv(file = "data/SNB Xrates downloaded clean.csv")
+
+rawXrates = 
+  read.csv(file = 
+             "data/SNB Xrates downloaded clean.csv", 
+           sep = ",")
+
+rawXrates$XX = NA
+
+# In my case, there are still the empty rows and columns. 
+# However, even if you do not have them, you can execute 
+# the below commands
+
+# What is the type of rawXrates?
+class(rawXrates)
+
+# Get the names of the columns ("variables"
+# in the statistical sense)
+names(rawXrates)
+
+# You can use the names to get a column
+
+
+head(rawXrates["Date"])
+
+# Use this trick to select only the variables we are interested in
+
+varList = c("Date", "D0", "D1", "Value")
+
+rawXrates = rawXrates[varList]
+
+head(rawXrates)
+
+
+
+end.rcode-->
+
+
 <h2 id="lecture4_homeassignment">Data for Home Assignment for Lecture 4</h2>
 
 <p>Try to get the following data &ldquo;clean&rdquo; into Excel:
