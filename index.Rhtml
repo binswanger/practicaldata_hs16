@@ -843,11 +843,12 @@ end.rcode-->
 <p>In this lecture, we start with working on real data. In particular, we will consider data on Swiss Franc exchange rates and how the latter relate to Swiss imports and exports. You need to download the data from the website of the Swiss National Bank to your device before the lecture. You can find the instructions how to do so in <a href = "pdfs/Downloading SNB data and reading CSV files.pdf" target= "_blank">this document</a>.
 </p>
 
+<!--
 <p>Just in case something really went wrong with downloading the data from the website of the Swiss National Bank, or with reading the data into R, you can get them 
 directly in <code>RData</code> format <a href = "data/rawXrates.RData" download>here</a>. Do not open this data by double clicking. Rather copy it into the folder where you have the other data files for this course, and then use the <code>load()</code> command from within an R script.</p>
+-->
 
-
-
+<!--
 
 <p>In order to progress a little faster during class, I already prepared two R scripts:
 <ul>
@@ -855,6 +856,7 @@ directly in <code>RData</code> format <a href = "data/rawXrates.RData" download>
 <li>Reading data into R and working with them<a href = "Lec4_forClass2.R" download> [download]</a>
 </ul>
 </p>
+-->
 
 
 
@@ -1093,6 +1095,293 @@ end.rcode-->
 </p>
 
 <p>See StudyNet under &ldquo;Abgabe&rdquo; for further instructions.</p>
+
+
+<!-- ############################################################### -->
+
+
+<h1 id="lecture5">Lecture 5</h1>
+
+
+<h2 id="lecture5_problemsReading" class="noBackToTop">Problems: What if some numbers are automatically converted to dates?</h2>
+
+<p>During Lecture 5, several of you had the problem that some selective values of exchange rates were automatically converted into dates. This produced some rather bizarre-looking graphics of the time series of exchange rates. Furthermore, a few of you also still had problems getting the <code>OECD Main Economic Indicators</code> into R. I will probably write a little more on this later, but here are some quick fixes. Below, I just post the data in <code>RData</code> format. These files have never been opened in Excel, so they should not be infected by the mentioned problems.</p>
+
+
+
+<p><ul>
+<li><a href = "data/rawXrates.RData" download>SNB exchange rate data</a>
+<li><a href = "data/rawExpImp.RData" download>SNB data on exports and imports</a> (for next lecture)
+<li><a href = "data/OECD_MEI.RData" download>OECD MEI data</a> (for home assignment)
+</ul></p>
+
+
+<p>Download these data and put them into the folder where you have the other data for this course. Then proceed as follows (adjust the working directory to your own settings):
+
+<!--begin.rcode
+
+setwd("D:/Dropbox/Mac&Surf/Programmierkurs Dropb/Data")
+
+load("rawXrates.RData")
+head(rawXrates, 10)
+
+load("rawExpImp.RData")
+head(rawExpImp, 10)
+
+load("OECD_MEI.RData")
+head(OECD_MEI, 10)
+
+end.rcode -->
+
+<p>You should now be able to run the script file from Lecture 5 with that data (you may have to make some minor adjustments in the code).</p>
+
+<h2 id="lecture5_codelive" >&ldquo;Live&rdquo; Code from Lecture 5</h2>
+
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec5_live.pdf" target = "_blank">pdf</a>.</p>
+
+
+<!-- begin.rcode
+
+
+#############################################
+# LECTURE 5: Handling data and data.frames  #
+#############################################
+
+
+# We will continute working with the data sets for the SNB
+# That you downloaded for Lecture 4. 
+
+# This time, we are assuming that the data already look neat
+# So no deletion of empty columns any more.
+ 
+# Preparatory steps
+###################
+
+# Almost everytime you work with data, you should do the 
+# following steps...
+
+rm(list = ls()) # Empty workspace to start with a "clean sheet"
+
+# REPLACE THE WORKING DIRECTORY BELOW WITH THE ONE FOR YOUR DEVICE
+setwd("D:/Dropbox/Mac&Surf/Programmierkurs Dropb/Data")
+
+
+# Read the data
+###############
+
+# Last time, we read the data like this:
+rawXrates = read.csv(
+  file = "SNB Xrates downloaded clean noEmptyCol.csv", sep = ",")
+
+# For some of you, sep should take the value ";".
+
+# However, for some of you, the column names may land in the first row,
+# which is not the idea. So add "header = TRUE":
+rawXrates = read.csv(file = 
+   "SNB Xrates downloaded clean noEmptyCol.csv", 
+       sep = ",", header = TRUE)
+
+
+
+# Referring to columns in data.frames
+#####################################
+
+# There are (at least) two ways to refer to a column:
+
+# rawXrates[["D0"]]
+# rawXrates$D0
+
+# For instance, you can use this for
+# getting all the values in a column
+
+length(unique(rawXrates$D0))
+table(rawXrates$D0)
+
+
+# or the type
+
+class(rawXrates[["D0"]])
+
+# Note the subtle difference between
+class(rawXrates[["D0"]])
+# and
+class(rawXrates["D0"])
+
+# Sometimes, this matters, sometimes not...
+# For deleting empty columns, it does not.
+
+# NOTE: Our data is in the so-called "long" format: all variables (in the statistical
+# sense) are "stacked".
+
+# The statistical variable names are a combination of D0 and D1.
+
+# The SNB does not make it too easy to get the meaning of D0. But if you go
+# to the Data Portal https://data.snb.ch/de/topics/ziredev#!/cube/devkum
+# and download the data in Excel format (which, by the way, is useless for 
+# reading the data into R), you get the meaning of the exchange rates.
+
+
+# Converting data from "long" to "wide" and back to "long"
+##########################################################
+
+# See "R for Everyone", Section 12.3
+
+# R comes with lots of "packages". For converting data from long to wide
+# we need the package "reshape2"
+
+# A package is intalled like this:
+# install.packages("reshape2")
+# Do this only once on your machine
+
+# Everytime you use a package, you have to "call" or "load" it
+library(reshape2)
+# or
+require(reshape2)
+
+
+wide = dcast(rawXrates, # the data frame
+             Date ~ # the variable that is to
+               # 'IDENTIFY' ROWS of new
+               # variables! Note the '~'!
+               D0 + D1 , # the column(s) containing 
+             # what you want to become
+             # the new variable NAMES 
+             value.var = "Value")  # column that contains the 
+              # VALUES of the new variables
+              # (often, you can ommit this)
+
+# In short:
+wide = dcast(rawXrates, Date ~ D0 + D1)
+
+# Check out, what the following would do:
+wide = dcast(rawXrates, Date ~ D0)
+wide = dcast(rawXrates, Date ~ D1)
+
+
+wide = dcast(rawXrates, Date ~ D0 + D1)
+
+# Let's go back to "long". For the moment, this is more useful
+
+long = melt(wide, id.vars = "Date", 
+            value.name = "Value")
+
+# D0 and D1 are now merged. We could change this, but
+# we have more important things to do...
+
+
+# Recoding date as numerical, and a unique time identifier
+#########################################################
+
+# Our data looks really enormously big
+# Let's say we only care about data from 2000 on
+# to start with... 
+
+# The next lines of code are preparations for
+# data from 2000 on (or any other year)
+
+
+#install.packages("stringr")
+library(stringr)
+
+rawXrates$year = as.numeric(  
+  substr(rawXrates$Date, start = 1, stop = 4)  )
+
+rawXrates$month = as.numeric(  
+  substr(rawXrates$Date, start = 6, stop = 7)  )
+
+
+# A unique identifier for time
+rawXrates$timeID = rawXrates$year + 
+  (rawXrates$month-1)/12
+
+
+
+# Eliminating rows and columns from data.frames
+# (= selection of subsets of data)
+################################################
+
+# Let's get rid of all data before 2000
+
+Xrates = rawXrates
+
+Xrates = Xrates[Xrates$year>=2000, ]
+
+# Now you can see why we needed the dates in numerical format!
+
+
+# Next we get rid of other information we are not interested in...
+unique(Xrates$D0)
+
+Xrates = Xrates[Xrates$D0 == "M0", ]
+
+# Let's select only Euro exchange rates
+
+# How is the EUR coded? For a factor
+unique(Xrates$D1)
+# does sometimes not work so well. In that case, use
+levels(Xrates$D1)
+
+Xrates = Xrates[Xrates$D1 == "EUR1", ]
+
+
+plot(Xrates$timeID, Xrates$Value, 
+     type = "l", col = "red3")
+
+
+
+# You can also use the subset command
+
+XratesAlt = subset(rawXrates, 
+      year >= 2000 & D0 == "M0"  & D1 == "EUR1",
+       select = c(timeID, D1, Value))
+
+# And if we again converted the dates, we could select data >= 2010
+
+# Remove objects we no longer need
+
+rm(long, wide, XratesAlt)
+
+
+# Analyze the correlation between the USD and EUR exchange rate
+###############################################################
+
+
+
+data = subset(rawXrates, 
+        (D1 == "EUR1" | D1 == "USD1") & 
+          D0 == "M0" &
+          timeID >= 2000 ,
+        select = c("timeID", "D1", "Value"))
+
+# Bring data into wide format
+library(reshape2)
+data = dcast(data, timeID ~ D1, value.var = "Value")
+
+
+# Make a plot
+matplot(data$timeID, cbind(data$EUR1, data$USD1), 
+        type = "l", xlab = "Time", ylab = "EUR, USD", col = c("red3", "turquoise"))
+grid()
+legend('topright', inset=.05, legend = c("EUR", "USD"),
+       lty = 1, col = c("red3", "turquoise"))
+
+# Correlation
+cor(data$EUR1, data$USD1)
+
+# Run a regression
+reg0 = lm(data$USD1 ~ data$EUR1)
+summary(reg0)
+
+
+end.rcode-->
+
+
+
+
+
+
+
+
 
 
 

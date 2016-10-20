@@ -1089,11 +1089,12 @@ you have to save %s.&quot;</span><span class="hl std">, x, T, r, out))</span>
 <p>In this lecture, we start with working on real data. In particular, we will consider data on Swiss Franc exchange rates and how the latter relate to Swiss imports and exports. You need to download the data from the website of the Swiss National Bank to your device before the lecture. You can find the instructions how to do so in <a href = "pdfs/Downloading SNB data and reading CSV files.pdf" target= "_blank">this document</a>.
 </p>
 
+<!--
 <p>Just in case something really went wrong with downloading the data from the website of the Swiss National Bank, or with reading the data into R, you can get them 
 directly in <code>RData</code> format <a href = "data/rawXrates.RData" download>here</a>. Do not open this data by double clicking. Rather copy it into the folder where you have the other data files for this course, and then use the <code>load()</code> command from within an R script.</p>
+-->
 
-
-
+<!--
 
 <p>In order to progress a little faster during class, I already prepared two R scripts:
 <ul>
@@ -1101,6 +1102,7 @@ directly in <code>RData</code> format <a href = "data/rawXrates.RData" download>
 <li>Reading data into R and working with them<a href = "Lec4_forClass2.R" download> [download]</a>
 </ul>
 </p>
+-->
 
 
 
@@ -1379,6 +1381,426 @@ you have to save %s!&quot;</span><span class="hl std">, x, T, r, out))</span>
 </p>
 
 <p>See StudyNet under &ldquo;Abgabe&rdquo; for further instructions.</p>
+
+
+<!-- ############################################################### -->
+
+
+<h1 id="lecture5">Lecture 5</h1>
+
+
+<h2 id="lecture5_problemsReading" class="noBackToTop">Problems: What if some numbers are automatically converted to dates?</h2>
+
+<p>During Lecture 5, several of you had the problem that some selective values of exchange rates were automatically converted into dates. This produced some rather bizarre-looking graphics of the time series of exchange rates. Furthermore, a few of you also still had problems getting the <code>OECD Main Economic Indicators</code> into R. I will probably write a little more on this later, but here are some quick fixes. Below, I just post the data in <code>RData</code> format. These files have never been opened in Excel, so they should not be infected by the mentioned problems.</p>
+
+
+
+<p><ul>
+<li><a href = "data/rawXrates.RData" download>SNB exchange rate data</a>
+<li><a href = "data/rawExpImp.RData" download>SNB data on exports and imports</a> (for next lecture)
+<li><a href = "data/OECD_MEI.RData" download>OECD MEI data</a> (for home assignment)
+</ul></p>
+
+
+<p>Download these data and put them into the folder where you have the other data for this course. Then proceed as follows (adjust the working directory to your own settings):
+
+<div class="chunk" id="unnamed-chunk-7"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">setwd</span><span class="hl std">(</span><span class="hl str">&quot;D:/Dropbox/Mac&amp;Surf/Programmierkurs Dropb/Data&quot;</span><span class="hl std">)</span>
+
+<span class="hl kwd">load</span><span class="hl std">(</span><span class="hl str">&quot;rawXrates.RData&quot;</span><span class="hl std">)</span>
+<span class="hl kwd">head</span><span class="hl std">(rawXrates,</span> <span class="hl num">10</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##       Date D0     D1 Value
+## 1  1914-01 M0   EUR1    NA
+## 2  1914-01 M0   GBP1 25.28
+## 3  1914-01 M0 DKK100    NA
+## 4  1914-01 M0 NOK100    NA
+## 5  1914-01 M0 CZK100    NA
+## 6  1914-01 M0 HUF100    NA
+## 7  1914-01 M0 PLN100    NA
+## 8  1914-01 M0 RUB100    NA
+## 9  1914-01 M0 SEK100    NA
+## 10 1914-01 M0 TRY100    NA
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">load</span><span class="hl std">(</span><span class="hl str">&quot;rawExpImp.RData&quot;</span><span class="hl std">)</span>
+<span class="hl kwd">head</span><span class="hl std">(rawExpImp,</span> <span class="hl num">10</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##       Date D0  D1  D2    Value
+## 1  1988-01  E   T WMF 4825.527
+## 2  1988-01  E   T   N       NA
+## 3  1988-01  E   T   R       NA
+## 4  1988-01  E MAE WMF  961.034
+## 5  1988-01  E MAE   N       NA
+## 6  1988-01  E MAE   R       NA
+## 7  1988-01  E PUB WMF  247.840
+## 8  1988-01  E PUB   N       NA
+## 9  1988-01  E PUB   R       NA
+## 10 1988-01  E   C WMF  649.854
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">load</span><span class="hl std">(</span><span class="hl str">&quot;OECD_MEI.RData&quot;</span><span class="hl std">)</span>
+<span class="hl kwd">head</span><span class="hl std">(OECD_MEI,</span> <span class="hl num">10</span><span class="hl std">)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##    ï..LOCATION Country  SUBJECT
+## 1          GRC  Greece LOCOABNO
+## 2          GRC  Greece LOCOABNO
+## 3          GRC  Greece LOCOABNO
+## 4          GRC  Greece LOCOABNO
+## 5          GRC  Greece LOCOABNO
+## 6          GRC  Greece LOCOABNO
+## 7          GRC  Greece LOCOABNO
+## 8          GRC  Greece LOCOABNO
+## 9          GRC  Greece LOCOABNO
+## 10         GRC  Greece LOCOABNO
+##                                                                    Subject
+## 1  Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+## 2  Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+## 3  Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+## 4  Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+## 5  Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+## 6  Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+## 7  Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+## 8  Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+## 9  Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+## 10 Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised
+##    MEASURE                                Measure FREQUENCY Frequency
+## 1     STSA Level, rate or national currency, s.a.         M   Monthly
+## 2     STSA Level, rate or national currency, s.a.         M   Monthly
+## 3     STSA Level, rate or national currency, s.a.         M   Monthly
+## 4     STSA Level, rate or national currency, s.a.         M   Monthly
+## 5     STSA Level, rate or national currency, s.a.         M   Monthly
+## 6     STSA Level, rate or national currency, s.a.         M   Monthly
+## 7     STSA Level, rate or national currency, s.a.         M   Monthly
+## 8     STSA Level, rate or national currency, s.a.         M   Monthly
+## 9     STSA Level, rate or national currency, s.a.         M   Monthly
+## 10    STSA Level, rate or national currency, s.a.         M   Monthly
+##       TIME     Time Unit.Code  Unit PowerCode.Code PowerCode
+## 1  2016-01 Jan-2016       IDX Index              0     Units
+## 2  2016-02 Feb-2016       IDX Index              0     Units
+## 3  2016-03 Mar-2016       IDX Index              0     Units
+## 4  2016-04 Apr-2016       IDX Index              0     Units
+## 5  2016-05 May-2016       IDX Index              0     Units
+## 6  2016-06 Jun-2016       IDX Index              0     Units
+## 7  2016-07 Jul-2016       IDX Index              0     Units
+## 8  2016-08 Aug-2016       IDX Index              0     Units
+## 9  2016-09 Sep-2016       IDX Index              0     Units
+## 10 2016-10 Oct-2016       IDX Index              0     Units
+##    Reference.Period.Code Reference.Period    Value Flag.Codes Flags
+## 1                                         102.2102                 
+## 2                                         102.2637                 
+## 3                                         102.1797                 
+## 4                                         102.0086                 
+## 5                                         101.7997                 
+## 6                                         101.5977                 
+## 7                                         101.4323                 
+## 8                                         101.3028                 
+## 9                                         101.2031                 
+## 10                                        101.1224
+</pre></div>
+</div></div>
+
+<p>You should now be able to run the script file from Lecture 5 with that data (you may have to make some minor adjustments in the code).</p>
+
+<h2 id="lecture5_codelive" >&ldquo;Live&rdquo; Code from Lecture 5</h2>
+
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec5_live.pdf" target = "_blank">pdf</a>.</p>
+
+
+<div class="chunk" id="unnamed-chunk-8"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">#############################################</span>
+<span class="hl com"># LECTURE 5: Handling data and data.frames  #</span>
+<span class="hl com">#############################################</span>
+
+
+<span class="hl com"># We will continute working with the data sets for the SNB</span>
+<span class="hl com"># That you downloaded for Lecture 4. </span>
+
+<span class="hl com"># This time, we are assuming that the data already look neat</span>
+<span class="hl com"># So no deletion of empty columns any more.</span>
+
+<span class="hl com"># Preparatory steps</span>
+<span class="hl com">###################</span>
+
+<span class="hl com"># Almost everytime you work with data, you should do the </span>
+<span class="hl com"># following steps...</span>
+
+<span class="hl kwd">rm</span><span class="hl std">(</span><span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl kwd">ls</span><span class="hl std">())</span> <span class="hl com"># Empty workspace to start with a &quot;clean sheet&quot;</span>
+
+<span class="hl com"># REPLACE THE WORKING DIRECTORY BELOW WITH THE ONE FOR YOUR DEVICE</span>
+<span class="hl kwd">setwd</span><span class="hl std">(</span><span class="hl str">&quot;D:/Dropbox/Mac&amp;Surf/Programmierkurs Dropb/Data&quot;</span><span class="hl std">)</span>
+
+
+<span class="hl com"># Read the data</span>
+<span class="hl com">###############</span>
+
+<span class="hl com"># Last time, we read the data like this:</span>
+<span class="hl std">rawXrates</span> <span class="hl kwb">=</span> <span class="hl kwd">read.csv</span><span class="hl std">(</span>
+  <span class="hl kwc">file</span> <span class="hl std">=</span> <span class="hl str">&quot;SNB Xrates downloaded clean noEmptyCol.csv&quot;</span><span class="hl std">,</span> <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot;,&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># For some of you, sep should take the value &quot;;&quot;.</span>
+
+<span class="hl com"># However, for some of you, the column names may land in the first row,</span>
+<span class="hl com"># which is not the idea. So add &quot;header = TRUE&quot;:</span>
+<span class="hl std">rawXrates</span> <span class="hl kwb">=</span> <span class="hl kwd">read.csv</span><span class="hl std">(</span><span class="hl kwc">file</span> <span class="hl std">=</span>
+   <span class="hl str">&quot;SNB Xrates downloaded clean noEmptyCol.csv&quot;</span><span class="hl std">,</span>
+       <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot;,&quot;</span><span class="hl std">,</span> <span class="hl kwc">header</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
+
+
+
+<span class="hl com"># Referring to columns in data.frames</span>
+<span class="hl com">#####################################</span>
+
+<span class="hl com"># There are (at least) two ways to refer to a column:</span>
+
+<span class="hl com"># rawXrates[[&quot;D0&quot;]]</span>
+<span class="hl com"># rawXrates$D0</span>
+
+<span class="hl com"># For instance, you can use this for</span>
+<span class="hl com"># getting all the values in a column</span>
+
+<span class="hl kwd">length</span><span class="hl std">(</span><span class="hl kwd">unique</span><span class="hl std">(rawXrates</span><span class="hl opt">$</span><span class="hl std">D0))</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 2
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">table</span><span class="hl std">(rawXrates</span><span class="hl opt">$</span><span class="hl std">D0)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## 
+##    M0    M1 
+## 32058 32058
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># or the type</span>
+
+<span class="hl kwd">class</span><span class="hl std">(rawXrates[[</span><span class="hl str">&quot;D0&quot;</span><span class="hl std">]])</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;factor&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Note the subtle difference between</span>
+<span class="hl kwd">class</span><span class="hl std">(rawXrates[[</span><span class="hl str">&quot;D0&quot;</span><span class="hl std">]])</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;factor&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># and</span>
+<span class="hl kwd">class</span><span class="hl std">(rawXrates[</span><span class="hl str">&quot;D0&quot;</span><span class="hl std">])</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;data.frame&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Sometimes, this matters, sometimes not...</span>
+<span class="hl com"># For deleting empty columns, it does not.</span>
+
+<span class="hl com"># NOTE: Our data is in the so-called &quot;long&quot; format: all variables (in the statistical</span>
+<span class="hl com"># sense) are &quot;stacked&quot;.</span>
+
+<span class="hl com"># The statistical variable names are a combination of D0 and D1.</span>
+
+<span class="hl com"># The SNB does not make it too easy to get the meaning of D0. But if you go</span>
+<span class="hl com"># to the Data Portal https://data.snb.ch/de/topics/ziredev#!/cube/devkum</span>
+<span class="hl com"># and download the data in Excel format (which, by the way, is useless for </span>
+<span class="hl com"># reading the data into R), you get the meaning of the exchange rates.</span>
+
+
+<span class="hl com"># Converting data from &quot;long&quot; to &quot;wide&quot; and back to &quot;long&quot;</span>
+<span class="hl com">##########################################################</span>
+
+<span class="hl com"># See &quot;R for Everyone&quot;, Section 12.3</span>
+
+<span class="hl com"># R comes with lots of &quot;packages&quot;. For converting data from long to wide</span>
+<span class="hl com"># we need the package &quot;reshape2&quot;</span>
+
+<span class="hl com"># A package is intalled like this:</span>
+<span class="hl com"># install.packages(&quot;reshape2&quot;)</span>
+<span class="hl com"># Do this only once on your machine</span>
+
+<span class="hl com"># Everytime you use a package, you have to &quot;call&quot; or &quot;load&quot; it</span>
+<span class="hl kwd">library</span><span class="hl std">(reshape2)</span>
+<span class="hl com"># or</span>
+<span class="hl kwd">require</span><span class="hl std">(reshape2)</span>
+
+
+<span class="hl std">wide</span> <span class="hl kwb">=</span> <span class="hl kwd">dcast</span><span class="hl std">(rawXrates,</span> <span class="hl com"># the data frame</span>
+             <span class="hl std">Date</span> <span class="hl opt">~</span> <span class="hl com"># the variable that is to</span>
+               <span class="hl com"># 'IDENTIFY' ROWS of new</span>
+               <span class="hl com"># variables! Note the '~'!</span>
+               <span class="hl std">D0</span> <span class="hl opt">+</span> <span class="hl std">D1 ,</span> <span class="hl com"># the column(s) containing </span>
+             <span class="hl com"># what you want to become</span>
+             <span class="hl com"># the new variable NAMES </span>
+             <span class="hl kwc">value.var</span> <span class="hl std">=</span> <span class="hl str">&quot;Value&quot;</span><span class="hl std">)</span>  <span class="hl com"># column that contains the </span>
+              <span class="hl com"># VALUES of the new variables</span>
+              <span class="hl com"># (often, you can ommit this)</span>
+
+<span class="hl com"># In short:</span>
+<span class="hl std">wide</span> <span class="hl kwb">=</span> <span class="hl kwd">dcast</span><span class="hl std">(rawXrates, Date</span> <span class="hl opt">~</span> <span class="hl std">D0</span> <span class="hl opt">+</span> <span class="hl std">D1)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Using Value as value column: use value.var to override.
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Check out, what the following would do:</span>
+<span class="hl std">wide</span> <span class="hl kwb">=</span> <span class="hl kwd">dcast</span><span class="hl std">(rawXrates, Date</span> <span class="hl opt">~</span> <span class="hl std">D0)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Using Value as value column: use value.var to override.
+</pre></div>
+<div class="message"><pre class="knitr r">## Aggregation function missing: defaulting to length
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">wide</span> <span class="hl kwb">=</span> <span class="hl kwd">dcast</span><span class="hl std">(rawXrates, Date</span> <span class="hl opt">~</span> <span class="hl std">D1)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Using Value as value column: use value.var to override.
+## Aggregation function missing: defaulting to length
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">wide</span> <span class="hl kwb">=</span> <span class="hl kwd">dcast</span><span class="hl std">(rawXrates, Date</span> <span class="hl opt">~</span> <span class="hl std">D0</span> <span class="hl opt">+</span> <span class="hl std">D1)</span>
+</pre></div>
+<div class="message"><pre class="knitr r">## Using Value as value column: use value.var to override.
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Let's go back to &quot;long&quot;. For the moment, this is more useful</span>
+
+<span class="hl std">long</span> <span class="hl kwb">=</span> <span class="hl kwd">melt</span><span class="hl std">(wide,</span> <span class="hl kwc">id.vars</span> <span class="hl std">=</span> <span class="hl str">&quot;Date&quot;</span><span class="hl std">,</span>
+            <span class="hl kwc">value.name</span> <span class="hl std">=</span> <span class="hl str">&quot;Value&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># D0 and D1 are now merged. We could change this, but</span>
+<span class="hl com"># we have more important things to do...</span>
+
+
+<span class="hl com"># Recoding date as numerical, and a unique time identifier</span>
+<span class="hl com">#########################################################</span>
+
+<span class="hl com"># Our data looks really enormously big</span>
+<span class="hl com"># Let's say we only care about data from 2000 on</span>
+<span class="hl com"># to start with... </span>
+
+<span class="hl com"># The next lines of code are preparations for</span>
+<span class="hl com"># data from 2000 on (or any other year)</span>
+
+
+<span class="hl com">#install.packages(&quot;stringr&quot;)</span>
+<span class="hl kwd">library</span><span class="hl std">(stringr)</span>
+
+<span class="hl std">rawXrates</span><span class="hl opt">$</span><span class="hl std">year</span> <span class="hl kwb">=</span> <span class="hl kwd">as.numeric</span><span class="hl std">(</span>
+  <span class="hl kwd">substr</span><span class="hl std">(rawXrates</span><span class="hl opt">$</span><span class="hl std">Date,</span> <span class="hl kwc">start</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">stop</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">)  )</span>
+
+<span class="hl std">rawXrates</span><span class="hl opt">$</span><span class="hl std">month</span> <span class="hl kwb">=</span> <span class="hl kwd">as.numeric</span><span class="hl std">(</span>
+  <span class="hl kwd">substr</span><span class="hl std">(rawXrates</span><span class="hl opt">$</span><span class="hl std">Date,</span> <span class="hl kwc">start</span> <span class="hl std">=</span> <span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">stop</span> <span class="hl std">=</span> <span class="hl num">7</span><span class="hl std">)  )</span>
+
+
+<span class="hl com"># A unique identifier for time</span>
+<span class="hl std">rawXrates</span><span class="hl opt">$</span><span class="hl std">timeID</span> <span class="hl kwb">=</span> <span class="hl std">rawXrates</span><span class="hl opt">$</span><span class="hl std">year</span> <span class="hl opt">+</span>
+  <span class="hl std">(rawXrates</span><span class="hl opt">$</span><span class="hl std">month</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span><span class="hl opt">/</span><span class="hl num">12</span>
+
+
+
+<span class="hl com"># Eliminating rows and columns from data.frames</span>
+<span class="hl com"># (= selection of subsets of data)</span>
+<span class="hl com">################################################</span>
+
+<span class="hl com"># Let's get rid of all data before 2000</span>
+
+<span class="hl std">Xrates</span> <span class="hl kwb">=</span> <span class="hl std">rawXrates</span>
+
+<span class="hl std">Xrates</span> <span class="hl kwb">=</span> <span class="hl std">Xrates[Xrates</span><span class="hl opt">$</span><span class="hl std">year</span><span class="hl opt">&gt;=</span><span class="hl num">2000</span><span class="hl std">, ]</span>
+
+<span class="hl com"># Now you can see why we needed the dates in numerical format!</span>
+
+
+<span class="hl com"># Next we get rid of other information we are not interested in...</span>
+<span class="hl kwd">unique</span><span class="hl std">(Xrates</span><span class="hl opt">$</span><span class="hl std">D0)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] M0 M1
+## Levels: M0 M1
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">Xrates</span> <span class="hl kwb">=</span> <span class="hl std">Xrates[Xrates</span><span class="hl opt">$</span><span class="hl std">D0</span> <span class="hl opt">==</span> <span class="hl str">&quot;M0&quot;</span><span class="hl std">, ]</span>
+
+<span class="hl com"># Let's select only Euro exchange rates</span>
+
+<span class="hl com"># How is the EUR coded? For a factor</span>
+<span class="hl kwd">unique</span><span class="hl std">(Xrates</span><span class="hl opt">$</span><span class="hl std">D1)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1] EUR1   GBP1   DKK100 NOK100 CZK100 HUF100 PLN100 RUB100 SEK100 TRY100
+## [11] USD1   CAD1   ARS100 BRL100 MXN100 ZAR1   JPY100 AUD1   CNY100 HKD100
+## [21] KRW100 MYR100 NZD1   SGD100 THB100 XDR1  
+## 26 Levels: ARS100 AUD1 BRL100 CAD1 CNY100 CZK100 DKK100 EUR1 ... ZAR1
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># does sometimes not work so well. In that case, use</span>
+<span class="hl kwd">levels</span><span class="hl std">(Xrates</span><span class="hl opt">$</span><span class="hl std">D1)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1] &quot;ARS100&quot; &quot;AUD1&quot;   &quot;BRL100&quot; &quot;CAD1&quot;   &quot;CNY100&quot; &quot;CZK100&quot; &quot;DKK100&quot;
+##  [8] &quot;EUR1&quot;   &quot;GBP1&quot;   &quot;HKD100&quot; &quot;HUF100&quot; &quot;JPY100&quot; &quot;KRW100&quot; &quot;MXN100&quot;
+## [15] &quot;MYR100&quot; &quot;NOK100&quot; &quot;NZD1&quot;   &quot;PLN100&quot; &quot;RUB100&quot; &quot;SEK100&quot; &quot;SGD100&quot;
+## [22] &quot;THB100&quot; &quot;TRY100&quot; &quot;USD1&quot;   &quot;XDR1&quot;   &quot;ZAR1&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">Xrates</span> <span class="hl kwb">=</span> <span class="hl std">Xrates[Xrates</span><span class="hl opt">$</span><span class="hl std">D1</span> <span class="hl opt">==</span> <span class="hl str">&quot;EUR1&quot;</span><span class="hl std">, ]</span>
+
+
+<span class="hl kwd">plot</span><span class="hl std">(Xrates</span><span class="hl opt">$</span><span class="hl std">timeID, Xrates</span><span class="hl opt">$</span><span class="hl std">Value,</span>
+     <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;l&quot;</span><span class="hl std">,</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl str">&quot;red3&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com"># You can also use the subset command</span>
+
+<span class="hl std">XratesAlt</span> <span class="hl kwb">=</span> <span class="hl kwd">subset</span><span class="hl std">(rawXrates,</span>
+      <span class="hl std">year</span> <span class="hl opt">&gt;=</span> <span class="hl num">2000</span> <span class="hl opt">&amp;</span> <span class="hl std">D0</span> <span class="hl opt">==</span> <span class="hl str">&quot;M0&quot;</span>  <span class="hl opt">&amp;</span> <span class="hl std">D1</span> <span class="hl opt">==</span> <span class="hl str">&quot;EUR1&quot;</span><span class="hl std">,</span>
+       <span class="hl kwc">select</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(timeID, D1, Value))</span>
+
+<span class="hl com"># And if we again converted the dates, we could select data &gt;= 2010</span>
+
+<span class="hl com"># Remove objects we no longer need</span>
+
+<span class="hl kwd">rm</span><span class="hl std">(long, wide, XratesAlt)</span>
+
+
+<span class="hl com"># Analyze the correlation between the USD and EUR exchange rate</span>
+<span class="hl com">###############################################################</span>
+
+
+
+<span class="hl std">data</span> <span class="hl kwb">=</span> <span class="hl kwd">subset</span><span class="hl std">(rawXrates,</span>
+        <span class="hl std">(D1</span> <span class="hl opt">==</span> <span class="hl str">&quot;EUR1&quot;</span> <span class="hl opt">|</span> <span class="hl std">D1</span> <span class="hl opt">==</span> <span class="hl str">&quot;USD1&quot;</span><span class="hl std">)</span> <span class="hl opt">&amp;</span>
+          <span class="hl std">D0</span> <span class="hl opt">==</span> <span class="hl str">&quot;M0&quot;</span> <span class="hl opt">&amp;</span>
+          <span class="hl std">timeID</span> <span class="hl opt">&gt;=</span> <span class="hl num">2000</span> <span class="hl std">,</span>
+        <span class="hl kwc">select</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;timeID&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;D1&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Value&quot;</span><span class="hl std">))</span>
+
+<span class="hl com"># Bring data into wide format</span>
+<span class="hl kwd">library</span><span class="hl std">(reshape2)</span>
+<span class="hl std">data</span> <span class="hl kwb">=</span> <span class="hl kwd">dcast</span><span class="hl std">(data, timeID</span> <span class="hl opt">~</span> <span class="hl std">D1,</span> <span class="hl kwc">value.var</span> <span class="hl std">=</span> <span class="hl str">&quot;Value&quot;</span><span class="hl std">)</span>
+
+
+<span class="hl com"># Make a plot</span>
+<span class="hl kwd">matplot</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">timeID,</span> <span class="hl kwd">cbind</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">EUR1, data</span><span class="hl opt">$</span><span class="hl std">USD1),</span>
+        <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;l&quot;</span><span class="hl std">,</span> <span class="hl kwc">xlab</span> <span class="hl std">=</span> <span class="hl str">&quot;Time&quot;</span><span class="hl std">,</span> <span class="hl kwc">ylab</span> <span class="hl std">=</span> <span class="hl str">&quot;EUR, USD&quot;</span><span class="hl std">,</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;red3&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;turquoise&quot;</span><span class="hl std">))</span>
+<span class="hl kwd">grid</span><span class="hl std">()</span>
+<span class="hl kwd">legend</span><span class="hl std">(</span><span class="hl str">'topright'</span><span class="hl std">,</span> <span class="hl kwc">inset</span><span class="hl std">=</span><span class="hl num">.05</span><span class="hl std">,</span> <span class="hl kwc">legend</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;EUR&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;USD&quot;</span><span class="hl std">),</span>
+       <span class="hl kwc">lty</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;red3&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;turquoise&quot;</span><span class="hl std">))</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-8-2.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" class="plot" /></div><div class="rcode">
+<div class="source"><pre class="knitr r"><span class="hl com"># Correlation</span>
+<span class="hl kwd">cor</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">EUR1, data</span><span class="hl opt">$</span><span class="hl std">USD1)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] 0.6299145
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Run a regression</span>
+<span class="hl std">reg0</span> <span class="hl kwb">=</span> <span class="hl kwd">lm</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">USD1</span> <span class="hl opt">~</span> <span class="hl std">data</span><span class="hl opt">$</span><span class="hl std">EUR1)</span>
+<span class="hl kwd">summary</span><span class="hl std">(reg0)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## 
+## Call:
+## lm(formula = data$USD1 ~ data$EUR1)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.34302 -0.12688 -0.06599  0.08268  0.49984 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -0.08376    0.11153  -0.751    0.454    
+## data$EUR1    0.89761    0.07845  11.441   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.2024 on 199 degrees of freedom
+## Multiple R-squared:  0.3968,	Adjusted R-squared:  0.3938 
+## F-statistic: 130.9 on 1 and 199 DF,  p-value: &lt; 2.2e-16
+</pre></div>
+</div></div>
+
+
+
+
+
+
+
+
 
 
 
