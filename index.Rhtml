@@ -1376,13 +1376,68 @@ summary(reg0)
 end.rcode-->
 
 
+<!-- ####################################################### -->
+
+
+
+<h1 id="lecture6">Lecture 6</h1>
+
+<h2 id="lecture5_homesolution" class="noBackToTop">Solution of Home Assignment for Lecture 5</h2>
+
+<p>The suggested solution for the home assignment of Lecture 5 is as shown below.</p>
+
+<!--begin.rcode
+
+
+######################
+# Homework Lecture 5 #
+######################
+
+rm(list = ls())
+
+# SET YOUR WORKING DIRECTORY
+setwd("D:/Dropbox/Mac&Surf/Programmierkurs Dropb/Data")
+
+data = read.csv("MEI_20102016213925096.csv", header = TRUE)
+
+# Get first column names, country and variable names
+names(data)
+unique(data$Country)
+unique(data$Subject)
+
+# Use subset to get a restricted data set
+x = subset(data, (Country == "Switzerland" |  Country == "Germany" | 
+             Country == "OECD - Total") & Frequency == "Monthly",
+           select = c("TIME", "Country", "Subject", "Value"))
+
+# The leading indicators series has a very complicated name
+# So, instead of typing it, let's just attach a variable to
+# it called series using the following trick:
+series = unique(x$Subject)[25]
+
+series
+
+# Select the rows that correspond to that series
+x = x[x$Subject == series, ]
+
+# Convert to wide format
+xWide = dcast(x, TIME ~ Country, value.var = "Value")
+
+xWide
+
+
+
+end.rcode-->
 
 
 
 
 
 
+<h2 id="lecture6_regression">A Very Brief Introduction into Regression Analysis</h2>
 
+
+<object width="1200" height="880" data="pdfs/Regression intro.pdf"></object>
 
 
 </div> <!-- end of div scriptText -->

@@ -1795,13 +1795,202 @@ you have to save %s!&quot;</span><span class="hl std">, x, T, r, out))</span>
 </div></div>
 
 
+<!-- ####################################################### -->
+
+
+
+<h1 id="lecture6">Lecture 6</h1>
+
+<h2 id="lecture5_homesolution" class="noBackToTop">Solution of Home Assignment for Lecture 5</h2>
+
+<p>The suggested solution for the home assignment of Lecture 5 is as shown below.</p>
+
+<div class="chunk" id="unnamed-chunk-9"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">######################</span>
+<span class="hl com"># Homework Lecture 5 #</span>
+<span class="hl com">######################</span>
+
+<span class="hl kwd">rm</span><span class="hl std">(</span><span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl kwd">ls</span><span class="hl std">())</span>
+
+<span class="hl com"># SET YOUR WORKING DIRECTORY</span>
+<span class="hl kwd">setwd</span><span class="hl std">(</span><span class="hl str">&quot;D:/Dropbox/Mac&amp;Surf/Programmierkurs Dropb/Data&quot;</span><span class="hl std">)</span>
+
+<span class="hl std">data</span> <span class="hl kwb">=</span> <span class="hl kwd">read.csv</span><span class="hl std">(</span><span class="hl str">&quot;MEI_20102016213925096.csv&quot;</span><span class="hl std">,</span> <span class="hl kwc">header</span> <span class="hl std">=</span> <span class="hl num">TRUE</span><span class="hl std">)</span>
+
+<span class="hl com"># Get first column names, country and variable names</span>
+<span class="hl kwd">names</span><span class="hl std">(data)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1] &quot;ï..LOCATION&quot;           &quot;Country&quot;              
+##  [3] &quot;SUBJECT&quot;               &quot;Subject&quot;              
+##  [5] &quot;MEASURE&quot;               &quot;Measure&quot;              
+##  [7] &quot;FREQUENCY&quot;             &quot;Frequency&quot;            
+##  [9] &quot;TIME&quot;                  &quot;Time&quot;                 
+## [11] &quot;Unit.Code&quot;             &quot;Unit&quot;                 
+## [13] &quot;PowerCode.Code&quot;        &quot;PowerCode&quot;            
+## [15] &quot;Reference.Period.Code&quot; &quot;Reference.Period&quot;     
+## [17] &quot;Value&quot;                 &quot;Flag.Codes&quot;           
+## [19] &quot;Flags&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">unique</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Country)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1] Greece                       Japan                       
+##  [3] Chile                        Australia                   
+##  [5] Belgium                      Czech Republic              
+##  [7] Germany                      Switzerland                 
+##  [9] South Africa                 Denmark                     
+## [11] Mexico                       Turkey                      
+## [13] Finland                      Netherlands                 
+## [15] Sweden                       United Kingdom              
+## [17] France                       Austria                     
+## [19] Italy                        Portugal                    
+## [21] Brazil                       Russia                      
+## [23] Slovenia                     Hungary                     
+## [25] Norway                       Poland                      
+## [27] Canada                       Korea                       
+## [29] New Zealand                  Slovak Republic             
+## [31] United States                Israel                      
+## [33] Spain                        Estonia                     
+## [35] Indonesia                    Ireland                     
+## [37] India                        Luxembourg                  
+## [39] Four Big European            China (People's Republic of)
+## [41] OECD + Major Six NME         Major Five Asia             
+## [43] NAFTA                        OECD - Europe               
+## [45] G7                           OECD - Total                
+## [47] Euro area (19 countries)    
+## 47 Levels: Australia Austria Belgium Brazil Canada ... United States
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl kwd">unique</span><span class="hl std">(data</span><span class="hl opt">$</span><span class="hl std">Subject)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1] Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised                        
+##  [2] Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Original series                   
+##  [3] Leading Indicators OECD &gt; Component series &gt; BTS - Sales expectations &gt; Normalised             
+##  [4] Leading Indicators OECD &gt; Component series &gt; BTS - Sales expectations &gt; Original series        
+##  [5] Leading Indicators OECD &gt; Component series &gt; BTS - Demand or orders inflow &gt; Normalised        
+##  [6] Leading Indicators OECD &gt; Component series &gt; BTS - Demand or orders inflow &gt; Original series   
+##  [7] Leading Indicators OECD &gt; Component series &gt; BTS - Employment &gt; Normalised                     
+##  [8] Leading Indicators OECD &gt; Component series &gt; BTS - Employment &gt; Original series                
+##  [9] Leading Indicators OECD &gt; Component series &gt; BTS - Finished goods stocks &gt; Normalised          
+## [10] Leading Indicators OECD &gt; Component series &gt; BTS - Finished goods stocks &gt; Original series     
+## [11] Leading Indicators OECD &gt; Component series &gt; BTS - Prices expectations &gt; Normalised            
+## [12] Leading Indicators OECD &gt; Component series &gt; BTS - Prices expectations &gt; Original series       
+## [13] Leading Indicators OECD &gt; Component series &gt; BTS - Order books &gt; Normalised                    
+## [14] Leading Indicators OECD &gt; Component series &gt; BTS - Order books &gt; Original series               
+## [15] Leading Indicators OECD &gt; Component series &gt; BTS - Production &gt; Normalised                     
+## [16] Leading Indicators OECD &gt; Component series &gt; BTS - Production &gt; Original series                
+## [17] Leading Indicators OECD &gt; Component series &gt; BTS - Business situation &gt; Normalised             
+## [18] Leading Indicators OECD &gt; Component series &gt; BTS - Business situation &gt; Original series        
+## [19] Leading Indicators OECD &gt; Component series &gt; BTS - Capacity utilization &gt; Normalised           
+## [20] Leading Indicators OECD &gt; Component series &gt; BTS - Capacity utilization &gt; Original series      
+## [21] Leading Indicators OECD &gt; Component series &gt; BTS - Export orders &gt; Normalised                  
+## [22] Leading Indicators OECD &gt; Component series &gt; BTS - Export orders &gt; Original series             
+## [23] Leading Indicators OECD &gt; Component series &gt; CS - Confidence indicator &gt; Normalised            
+## [24] Leading Indicators OECD &gt; Component series &gt; CS - Confidence indicator &gt; Original series       
+## [25] Leading Indicators OECD &gt; Component series &gt; Construction &gt; Normalised                         
+## [26] Leading Indicators OECD &gt; Component series &gt; Construction &gt; Original series                    
+## [27] Leading Indicators OECD &gt; Component series &gt; Employment - Unemployment &gt; Normalised            
+## [28] Leading Indicators OECD &gt; Component series &gt; Employment - Unemployment &gt; Original series       
+## [29] Leading Indicators OECD &gt; Component series &gt; Currency conversion &gt; Normalised                  
+## [30] Leading Indicators OECD &gt; Component series &gt; Currency conversion &gt; Original series             
+## [31] Leading Indicators OECD &gt; Component series &gt; Hours &gt; Normalised                                
+## [32] Leading Indicators OECD &gt; Component series &gt; Hours &gt; Original series                           
+## [33] Leading Indicators OECD &gt; Component series &gt; Inventories to shipments &gt; Normalised             
+## [34] Leading Indicators OECD &gt; Component series &gt; Inventories to shipments &gt; Original series        
+## [35] Leading Indicators OECD &gt; Component series &gt; Long-term interest rate &gt; Normalised              
+## [36] Leading Indicators OECD &gt; Component series &gt; Long-term interest rate &gt; Original series         
+## [37] Leading Indicators OECD &gt; Component series &gt; Monetary Aggregates &gt; Normalised                  
+## [38] Leading Indicators OECD &gt; Component series &gt; Monetary Aggregates &gt; Original series             
+## [39] Leading Indicators OECD &gt; Component series &gt; Imports of goods &gt; Normalised                     
+## [40] Leading Indicators OECD &gt; Component series &gt; Net trade &gt; Normalised                            
+## [41] Leading Indicators OECD &gt; Component series &gt; Net trade &gt; Original series                       
+## [42] Leading Indicators OECD &gt; Component series &gt; Orders &gt; Normalised                               
+## [43] Leading Indicators OECD &gt; Component series &gt; Orders &gt; Original series                          
+## [44] Leading Indicators OECD &gt; Component series &gt; Production - Basic metals &gt; Normalised            
+## [45] Leading Indicators OECD &gt; Component series &gt; Production - Basic metals &gt; Original series       
+## [46] Leading Indicators OECD &gt; Component series &gt; Consumer prices &gt; Normalised                      
+## [47] Leading Indicators OECD &gt; Component series &gt; Consumer prices &gt; Original series                 
+## [48] Leading Indicators OECD &gt; Component series &gt; Production - Electricity &gt; Normalised             
+## [49] Leading Indicators OECD &gt; Component series &gt; Production - Electricity &gt; Original series        
+## [50] Leading Indicators OECD &gt; Component series &gt; Production - Goods &gt; Normalised                   
+## [51] Leading Indicators OECD &gt; Component series &gt; Production - Goods &gt; Original series              
+## [52] Leading Indicators OECD &gt; Component series &gt; Production - Non metallic &gt; Normalised            
+## [53] Leading Indicators OECD &gt; Component series &gt; Producer prices &gt; Normalised                      
+## [54] Leading Indicators OECD &gt; Component series &gt; Producer prices &gt; Original series                 
+## [55] Leading Indicators OECD &gt; Component series &gt; Production - Mining and quarrying &gt; Normalised    
+## [56] Leading Indicators OECD &gt; Component series &gt; Interest rate spread &gt; Normalised                 
+## [57] Leading Indicators OECD &gt; Component series &gt; Interest rate spread &gt; Original series            
+## [58] Leading Indicators OECD &gt; Component series &gt; Stocks &gt; Normalised                               
+## [59] Leading Indicators OECD &gt; Component series &gt; Stocks &gt; Original series                          
+## [60] Leading Indicators OECD &gt; Component series &gt; Sales &gt; Normalised                                
+## [61] Leading Indicators OECD &gt; Component series &gt; Sales &gt; Original series                           
+## [62] Leading Indicators OECD &gt; Component series &gt; Share prices &gt; Normalised                         
+## [63] Leading Indicators OECD &gt; Component series &gt; Share prices &gt; Original series                    
+## [64] Leading Indicators OECD &gt; Component series &gt; Short-term interest rate &gt; Normalised             
+## [65] Leading Indicators OECD &gt; Component series &gt; Short-term interest rate &gt; Original series        
+## [66] Leading Indicators OECD &gt; Component series &gt; Tourism activity &gt; Normalised                     
+## [67] Leading Indicators OECD &gt; Component series &gt; Tourism activity &gt; Original series                
+## [68] Leading Indicators OECD &gt; Component series &gt; Imports &gt; Normalised                              
+## [69] Leading Indicators OECD &gt; Component series &gt; Terms of trade &gt; Normalised                       
+## [70] Leading Indicators OECD &gt; Component series &gt; Terms of trade &gt; Original series                  
+## [71] Leading Indicators OECD &gt; Component series &gt; Exports &gt; Normalised                              
+## [72] Leading Indicators OECD &gt; Component series &gt; Exports &gt; Original series                         
+## [73] Leading Indicators OECD &gt; Component series &gt; Car registration - sales &gt; Normalised             
+## [74] Leading Indicators OECD &gt; Component series &gt; Car registration - sales &gt; Original series        
+## [75] Leading Indicators OECD &gt; Component series &gt; Exports of goods &gt; Normalised                     
+## [76] Leading Indicators OECD &gt; Component series &gt; Exports of goods &gt; Original series                
+## [77] Leading Indicators OECD &gt; Leading indicators &gt; CLI &gt; Amplitude adjusted                        
+## [78] Leading Indicators OECD &gt; Leading indicators &gt; CLI &gt; Normalised                                
+## [79] Leading Indicators OECD &gt; Leading indicators &gt; CLI &gt; Trend restored                            
+## [80] Leading Indicators OECD &gt; Component series &gt; BTS - Stocks of orders &gt; Normalised               
+## [81] Leading Indicators OECD &gt; Component series &gt; BTS - Stocks of orders &gt; Original series          
+## [82] Leading Indicators OECD &gt; Component series &gt; CS - Expected economic situation &gt; Normalised     
+## [83] Leading Indicators OECD &gt; Component series &gt; CS - Expected economic situation &gt; Original series
+## [84] Leading Indicators OECD &gt; Reference series &gt; Gross Domestic Product (GDP) &gt; Normalised         
+## [85] Leading Indicators OECD &gt; Reference series &gt; Gross Domestic Product (GDP) &gt; Original series    
+## [86] Leading Indicators OECD &gt; Reference series &gt; Gross Domestic Product (GDP) &gt; Ratio to trend     
+## [87] Leading Indicators OECD &gt; Reference series &gt; Gross Domestic Product (GDP) &gt; Trend              
+## 87 Levels: Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised ...
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Use subset to get a restricted data set</span>
+<span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">subset</span><span class="hl std">(data, (Country</span> <span class="hl opt">==</span> <span class="hl str">&quot;Switzerland&quot;</span> <span class="hl opt">|</span>  <span class="hl std">Country</span> <span class="hl opt">==</span> <span class="hl str">&quot;Germany&quot;</span> <span class="hl opt">|</span>
+             <span class="hl std">Country</span> <span class="hl opt">==</span> <span class="hl str">&quot;OECD - Total&quot;</span><span class="hl std">)</span> <span class="hl opt">&amp;</span> <span class="hl std">Frequency</span> <span class="hl opt">==</span> <span class="hl str">&quot;Monthly&quot;</span><span class="hl std">,</span>
+           <span class="hl kwc">select</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;TIME&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Country&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Subject&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Value&quot;</span><span class="hl std">))</span>
+
+<span class="hl com"># The leading indicators series has a very complicated name</span>
+<span class="hl com"># So, instead of typing it, let's just attach a variable to</span>
+<span class="hl com"># it called series using the following trick:</span>
+<span class="hl std">series</span> <span class="hl kwb">=</span> <span class="hl kwd">unique</span><span class="hl std">(x</span><span class="hl opt">$</span><span class="hl std">Subject)[</span><span class="hl num">25</span><span class="hl std">]</span>
+
+<span class="hl std">series</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] Leading Indicators OECD &gt; Reference series &gt; Gross Domestic Product (GDP) &gt; Trend
+## 87 Levels: Leading Indicators OECD &gt; Component series &gt; Bank activity &gt; Normalised ...
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># Select the rows that correspond to that series</span>
+<span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl std">x[x</span><span class="hl opt">$</span><span class="hl std">Subject</span> <span class="hl opt">==</span> <span class="hl std">series, ]</span>
+
+<span class="hl com"># Convert to wide format</span>
+<span class="hl std">xWide</span> <span class="hl kwb">=</span> <span class="hl kwd">dcast</span><span class="hl std">(x, TIME</span> <span class="hl opt">~</span> <span class="hl std">Country,</span> <span class="hl kwc">value.var</span> <span class="hl std">=</span> <span class="hl str">&quot;Value&quot;</span><span class="hl std">)</span>
+
+<span class="hl std">xWide</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##      TIME  Germany OECD - Total Switzerland
+## 1 2016-01 109.0055     109.5743    108.7494
+## 2 2016-02 109.1387     109.7416    108.8790
+## 3 2016-03 109.2720     109.9092    109.0088
+## 4 2016-04 109.4056     110.0713    109.1388
+## 5 2016-05 109.5393     110.2337    109.2689
+## 6 2016-06 109.6732     110.3964    109.3992
+</pre></div>
+</div></div>
 
 
 
 
 
 
+<h2 id="lecture6_regression">A Very Brief Introduction into Regression Analysis</h2>
 
+
+<object width="1200" height="880" data="pdfs/Regression intro.pdf"></object>
 
 
 </div> <!-- end of div scriptText -->
