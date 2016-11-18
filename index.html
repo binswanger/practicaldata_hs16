@@ -2220,19 +2220,259 @@ you have to save %s!&quot;</span><span class="hl std">, x, T, r, out))</span>
 <h2 id="lecture7-intro" class="noBackToTop">Introductory remark</h2>
 
 
-<p>Up to now, you have seen the most important concepts used for analyzing data with R. You have seen many data types, you have seen conditional statments, loops, and, very importantly, functions. You have also learned how to manipulate data frames, and you saw how to produce graphs. You even know how to run regressions and add regression lines to scatter plots.</p>
+<p>Up to now, you have seen the most important concepts used for analyzing data with R. You have seen many data types, you have seen conditional statements, loops, and, very importantly, functions. You have also learned how to manipulate data frames, and you saw how to produce graphs. You even know how to run regressions and add regression lines to scatter plots.</p>
 
 <p>For the coming lectures, we will focus more on the documentation process of data analysis. We may produce hundreds of graphs and regressions, and we want a format that is convenient for inspecting the results. Moreover, it is the most common thing when analyzing data that you change your mind. You change the definition of your variables, or you want to change the title in your graph etc. etc. Now, if you have produced 300 graphs and regression results, you certainly don't feel like manually going through all of them again and changing them. It would be better to change three lines of code, press a button, and all the 300 graphs, their titles, and the regression tables are spit out according to your new idea. That would be pretty cool! And that's what we want to work on now.</p>
 
 
 <h2 id="latex" >RMarkdown and Latex</h2>
 
-<p>RStudio has integrated a terrific tool that will achieve this miracle: RMarkdown. In Order to use it, you have install the <code>rmarkdown</code> package and, possibly, also Latex. How this is done is explained in detail in an <a href = "pdfs/RMarkdown&Latex.pdf">extra document</a>.</p>
+<p>RStudio has integrated a terrific tool that will achieve this miracle: RMarkdown. In Order to use it, you have install the <code>rmarkdown</code> package and, possibly, also Latex. How this is done is explained in detail in an <a href = "pdfs/RMarkdown&Latex.pdf" target = "_blank">extra document</a>.</p>
+
+
+
+<h2 id="lecture7_codelive" >&ldquo;Live&rdquo; Code from Lecture 7</h2>
+
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec7_live.pdf" target = "_blank">pdf</a>.</p>
 
 
 
 
+<div class="chunk" id="unnamed-chunk-11"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com">#####################################################################</span>
+<span class="hl com"># LECTURE 7: Giving better names to economic variables in SNB data  #</span>
+<span class="hl com">#####################################################################</span>
 
+<span class="hl com"># This is the first of a series of scripts for Lecture 7.</span>
+<span class="hl com"># In this script, we &quot;dress up&quot; our SNB data and then save them</span>
+<span class="hl com"># To the hard disk directly in RData and csv format. So we can use them</span>
+<span class="hl com"># next time cirectly, without any dressing up.</span>
+
+<span class="hl kwd">rm</span><span class="hl std">(</span><span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl kwd">ls</span><span class="hl std">())</span>
+
+<span class="hl com"># Read the data as they come from the SNB website</span>
+<span class="hl com">#################################################</span>
+
+<span class="hl com"># REPLACE THE WORKING DIRECTORY BELOW WITH THE ONE FOR YOUR DEVICE</span>
+<span class="hl kwd">setwd</span><span class="hl std">(</span><span class="hl str">&quot;D:/Dropbox/Mac&amp;Surf/Programmierkurs Dropb/Data&quot;</span><span class="hl std">)</span>
+
+
+
+<span class="hl com"># Read files, adjust file names to your situation!</span>
+<span class="hl std">rawXrates</span> <span class="hl kwb">=</span> <span class="hl kwd">read.csv</span><span class="hl std">(</span><span class="hl kwc">file</span> <span class="hl std">=</span>
+   <span class="hl str">&quot;SNB Xrates downloaded clean noEmptyCol.csv&quot;</span><span class="hl std">)</span>
+
+<span class="hl std">rawAussen</span> <span class="hl kwb">=</span> <span class="hl kwd">read.csv</span><span class="hl std">(</span><span class="hl kwc">file</span> <span class="hl std">=</span>
+    <span class="hl str">&quot;SNB Aussenhandel downloaded clean noEmptyCol.csv&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># If you are having troubles with the data, use the following two lines</span>
+
+<span class="hl com"># load(&quot;rawXrates.RData&quot;)</span>
+<span class="hl com"># load(&quot;rawExpImp.RData&quot;); rawAussen = rawExpImp; rm(rawExpImp)</span>
+
+<span class="hl com"># You get these data in RData format from the online script on</span>
+<span class="hl com"># https://binswanger.github.io/practicaldata_hs16/#Problems--What-if-some-numbers-are-automatically-converted-to-dates-</span>
+<span class="hl com"># Put these files in your working directory</span>
+
+<span class="hl com"># Give better name to the &quot;economic variables&quot;</span>
+<span class="hl com">##############################################</span>
+
+<span class="hl com"># First for rawAussen</span>
+
+<span class="hl com"># Make a copy of rawAussen</span>
+<span class="hl std">dataAussen</span> <span class="hl kwb">=</span> <span class="hl std">rawAussen</span>
+
+<span class="hl com">#rename Do</span>
+<span class="hl std">oldNamesA_D0</span> <span class="hl kwb">=</span> <span class="hl kwd">unique</span><span class="hl std">(</span><span class="hl kwd">as.character</span><span class="hl std">(dataAussen</span><span class="hl opt">$</span><span class="hl std">D0))</span>
+  <span class="hl com"># use &quot;as.character&quot;, so we really know what we are doing, factors are tricky</span>
+<span class="hl std">newNamesA_D0</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Einfuhr&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Ausfuhr&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Handelsbilanzsaldo&quot;</span><span class="hl std">)</span>
+<span class="hl com">#check</span>
+<span class="hl kwd">cbind</span><span class="hl std">(oldNamesA_D0, newNamesA_D0)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##      oldNamesA_D0 newNamesA_D0        
+## [1,] &quot;E&quot;          &quot;Einfuhr&quot;           
+## [2,] &quot;A&quot;          &quot;Ausfuhr&quot;           
+## [3,] &quot;H&quot;          &quot;Handelsbilanzsaldo&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl com"># # For developing the function</span>
+<span class="hl com"># df = dataAussen</span>
+<span class="hl com"># colInDf = &quot;D0&quot;</span>
+<span class="hl com"># oldNames = oldNamesA_D0</span>
+<span class="hl com"># newNames = newNamesA_D0</span>
+
+<span class="hl com"># A function for renaming, so we need to type this 3 times...</span>
+<span class="hl std">rename</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">df</span><span class="hl std">,</span> <span class="hl kwc">colInDf</span><span class="hl std">,</span> <span class="hl kwc">oldNames</span><span class="hl std">,</span> <span class="hl kwc">newNames</span><span class="hl std">){</span>
+  <span class="hl com"># In case that the column where we want to change names is a factor</span>
+  <span class="hl com"># first convert the factor to character. Otherwise, it becomes a bit more tricky</span>
+  <span class="hl kwa">if</span> <span class="hl std">(</span><span class="hl kwd">is.factor</span><span class="hl std">(df[[colInDf]])) {</span>
+    <span class="hl std">df[[colInDf]]</span> <span class="hl kwb">=</span> <span class="hl kwd">as.character</span><span class="hl std">(df[[colInDf]])</span>
+  <span class="hl std">}</span>
+
+  <span class="hl com"># Now rename</span>
+  <span class="hl kwa">for</span> <span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl num">1</span><span class="hl opt">:</span><span class="hl kwd">length</span><span class="hl std">(oldNames)){</span>
+    <span class="hl std">df[[colInDf]]   [df[[colInDf]]</span> <span class="hl opt">==</span> <span class="hl std">oldNames[i]]</span> <span class="hl kwb">=</span> <span class="hl std">newNames[i]</span>
+    <span class="hl com">#dataAussen[[&quot;D0&quot;]]  [dataAussen[[&quot;D0&quot;]] == &quot;E&quot;]</span>
+    <span class="hl com">#dataAussen$D0   [dataAussen$D0 == &quot;E&quot;]</span>
+  <span class="hl std">}</span>
+  <span class="hl kwd">return</span><span class="hl std">(df)</span>
+<span class="hl std">}</span>
+
+<span class="hl std">dataAussen</span> <span class="hl kwb">=</span> <span class="hl kwd">rename</span><span class="hl std">(dataAussen,</span> <span class="hl str">&quot;D0&quot;</span><span class="hl std">, oldNamesA_D0, newNamesA_D0)</span>
+
+<span class="hl com"># rename D1</span>
+
+<span class="hl std">oldNamesA_D1</span> <span class="hl kwb">=</span> <span class="hl kwd">unique</span><span class="hl std">(</span><span class="hl kwd">as.character</span><span class="hl std">(dataAussen</span><span class="hl opt">$</span><span class="hl std">D1))</span>
+<span class="hl std">newNamesA_D1</span><span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Total&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Maschinen, Apparate und Elektronik&quot;</span><span class="hl std">,</span>
+              <span class="hl str">&quot;Praezisionsinstrumente, Uhren, Bijouterie&quot;</span><span class="hl std">,</span>
+              <span class="hl str">&quot;Chemikalien&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Textilien, Bekleidung, Schuhe&quot;</span><span class="hl std">,</span>
+              <span class="hl str">&quot;Fahrzeuge&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Metalle&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Uhren&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Praezisionsinstrumente&quot;</span><span class="hl std">,</span>
+              <span class="hl str">&quot;Praezisionsinstrumente, Uhren, Bijouterie&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># Check            </span>
+<span class="hl kwd">cbind</span><span class="hl std">(oldNamesA_D1, newNamesA_D1)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##       oldNamesA_D1 newNamesA_D1                               
+##  [1,] &quot;T&quot;          &quot;Total&quot;                                    
+##  [2,] &quot;MAE&quot;        &quot;Maschinen, Apparate und Elektronik&quot;       
+##  [3,] &quot;PUB&quot;        &quot;Praezisionsinstrumente, Uhren, Bijouterie&quot;
+##  [4,] &quot;C&quot;          &quot;Chemikalien&quot;                              
+##  [5,] &quot;TBS0&quot;       &quot;Textilien, Bekleidung, Schuhe&quot;            
+##  [6,] &quot;F&quot;          &quot;Fahrzeuge&quot;                                
+##  [7,] &quot;M&quot;          &quot;Metalle&quot;                                  
+##  [8,] &quot;U&quot;          &quot;Uhren&quot;                                    
+##  [9,] &quot;P&quot;          &quot;Praezisionsinstrumente&quot;                   
+## [10,] &quot;TBS1&quot;       &quot;Praezisionsinstrumente, Uhren, Bijouterie&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">dataAussen</span> <span class="hl kwb">=</span> <span class="hl kwd">rename</span><span class="hl std">(dataAussen,</span> <span class="hl str">&quot;D1&quot;</span><span class="hl std">, oldNamesA_D1, newNamesA_D1)</span>
+
+<span class="hl std">oldNamesA_D2</span> <span class="hl kwb">=</span> <span class="hl kwd">unique</span><span class="hl std">(</span><span class="hl kwd">as.character</span><span class="hl std">(dataAussen</span><span class="hl opt">$</span><span class="hl std">D2))</span>
+<span class="hl std">newNamesA_D2</span><span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Wert in Millionen Franken&quot;</span><span class="hl std">,</span>
+              <span class="hl str">&quot;Veraenderung gegenueber dem Vorjahr in \u0025 - nominal&quot;</span><span class="hl std">,</span>
+              <span class="hl str">&quot;Veraenderung gegenueber dem Vorjahr in \u0025 - real&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># &quot;u0025&quot; is UTF-8 coding</span>
+
+<span class="hl com"># Check            </span>
+<span class="hl kwd">cbind</span><span class="hl std">(oldNamesA_D2, newNamesA_D2)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##      oldNamesA_D2 newNamesA_D2                                        
+## [1,] &quot;WMF&quot;        &quot;Wert in Millionen Franken&quot;                         
+## [2,] &quot;N&quot;          &quot;Veraenderung gegenueber dem Vorjahr in % - nominal&quot;
+## [3,] &quot;R&quot;          &quot;Veraenderung gegenueber dem Vorjahr in % - real&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">dataAussen</span> <span class="hl kwb">=</span> <span class="hl kwd">rename</span><span class="hl std">(dataAussen,</span> <span class="hl str">&quot;D2&quot;</span><span class="hl std">, oldNamesA_D2, newNamesA_D2)</span>
+
+<span class="hl com"># Now the exchange rates</span>
+
+<span class="hl com"># Copy the data to new data frame</span>
+<span class="hl com"># get rid of end-of-month values of exchange rates</span>
+<span class="hl std">dataXrates</span> <span class="hl kwb">=</span> <span class="hl std">rawXrates[rawXrates</span><span class="hl opt">$</span><span class="hl std">D0</span> <span class="hl opt">==</span> <span class="hl str">&quot;M0&quot;</span><span class="hl std">, ]</span>
+
+<span class="hl std">oldNamesX_D1</span> <span class="hl kwb">=</span> <span class="hl kwd">unique</span><span class="hl std">(</span><span class="hl kwd">as.character</span><span class="hl std">(dataXrates</span><span class="hl opt">$</span><span class="hl std">D1))</span>
+
+<span class="hl std">newNamesX_D1</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span>
+    <span class="hl str">&quot;CHF/Euro&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/Britisches Pfund&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Daenische Kronen&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Norwegische Kronen&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Tschechische Kronen&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Ungarische Forint&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Polnische Zloty&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Rubel&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Schwedische Kronen&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Tuerkische Lira&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/US Dollar&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/Kanadische Dollar&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Argentinische Pesos&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Brasilianische Real&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Mexikanische Pesos&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/Suedafrikanischer Rand&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Japanische Yen&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/Australischer Dollar&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Chinesische Yuan&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Hongkong Dollars&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Koreanische Won&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Malaysische Ringgit&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/Neuseeländischer Dollar&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Singapur-Dollars&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/100 Thailaendische Baht&quot;</span><span class="hl std">,</span>
+    <span class="hl str">&quot;CHF/Sonderziehungsrecht&quot;</span><span class="hl std">)</span>
+
+
+<span class="hl com"># Check            </span>
+<span class="hl kwd">cbind</span><span class="hl std">(oldNamesX_D1, newNamesX_D1)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##       oldNamesX_D1 newNamesX_D1                 
+##  [1,] &quot;EUR1&quot;       &quot;CHF/Euro&quot;                   
+##  [2,] &quot;GBP1&quot;       &quot;CHF/Britisches Pfund&quot;       
+##  [3,] &quot;DKK100&quot;     &quot;CHF/100 Daenische Kronen&quot;   
+##  [4,] &quot;NOK100&quot;     &quot;CHF/100 Norwegische Kronen&quot; 
+##  [5,] &quot;CZK100&quot;     &quot;CHF/100 Tschechische Kronen&quot;
+##  [6,] &quot;HUF100&quot;     &quot;CHF/100 Ungarische Forint&quot;  
+##  [7,] &quot;PLN100&quot;     &quot;CHF/100 Polnische Zloty&quot;    
+##  [8,] &quot;RUB100&quot;     &quot;CHF/100 Rubel&quot;              
+##  [9,] &quot;SEK100&quot;     &quot;CHF/100 Schwedische Kronen&quot; 
+## [10,] &quot;TRY100&quot;     &quot;CHF/100 Tuerkische Lira&quot;    
+## [11,] &quot;USD1&quot;       &quot;CHF/US Dollar&quot;              
+## [12,] &quot;CAD1&quot;       &quot;CHF/Kanadische Dollar&quot;      
+## [13,] &quot;ARS100&quot;     &quot;CHF/100 Argentinische Pesos&quot;
+## [14,] &quot;BRL100&quot;     &quot;CHF/100 Brasilianische Real&quot;
+## [15,] &quot;MXN100&quot;     &quot;CHF/100 Mexikanische Pesos&quot; 
+## [16,] &quot;ZAR1&quot;       &quot;CHF/Suedafrikanischer Rand&quot; 
+## [17,] &quot;JPY100&quot;     &quot;CHF/100 Japanische Yen&quot;     
+## [18,] &quot;AUD1&quot;       &quot;CHF/Australischer Dollar&quot;   
+## [19,] &quot;CNY100&quot;     &quot;CHF/100 Chinesische Yuan&quot;   
+## [20,] &quot;HKD100&quot;     &quot;CHF/100 Hongkong Dollars&quot;   
+## [21,] &quot;KRW100&quot;     &quot;CHF/100 Koreanische Won&quot;    
+## [22,] &quot;MYR100&quot;     &quot;CHF/100 Malaysische Ringgit&quot;
+## [23,] &quot;NZD1&quot;       &quot;CHF/Neuseeländischer Dollar&quot;
+## [24,] &quot;SGD100&quot;     &quot;CHF/100 Singapur-Dollars&quot;   
+## [25,] &quot;THB100&quot;     &quot;CHF/100 Thailaendische Baht&quot;
+## [26,] &quot;XDR1&quot;       &quot;CHF/Sonderziehungsrecht&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">dataXrates</span> <span class="hl kwb">=</span> <span class="hl kwd">rename</span><span class="hl std">(dataXrates,</span> <span class="hl str">&quot;D1&quot;</span><span class="hl std">, oldNamesX_D1, newNamesX_D1)</span>
+
+<span class="hl com"># Create unique timeIDs</span>
+<span class="hl com">#######################</span>
+
+<span class="hl kwd">library</span><span class="hl std">(stringr)</span>
+
+<span class="hl std">calcTimeID</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">df</span><span class="hl std">){</span>
+
+  <span class="hl std">df</span><span class="hl opt">$</span><span class="hl std">year</span> <span class="hl kwb">=</span> <span class="hl kwd">as.numeric</span><span class="hl std">(</span>
+    <span class="hl kwd">substr</span><span class="hl std">(df</span><span class="hl opt">$</span><span class="hl std">Date,</span> <span class="hl kwc">start</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">stop</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">)  )</span>
+
+  <span class="hl std">df</span><span class="hl opt">$</span><span class="hl std">month</span> <span class="hl kwb">=</span> <span class="hl kwd">as.numeric</span><span class="hl std">(</span>
+    <span class="hl kwd">substr</span><span class="hl std">(df</span><span class="hl opt">$</span><span class="hl std">Date,</span> <span class="hl kwc">start</span> <span class="hl std">=</span> <span class="hl num">6</span><span class="hl std">,</span> <span class="hl kwc">stop</span> <span class="hl std">=</span> <span class="hl num">7</span><span class="hl std">)  )</span>
+
+  <span class="hl std">df</span><span class="hl opt">$</span><span class="hl std">timeID</span> <span class="hl kwb">=</span> <span class="hl std">df</span><span class="hl opt">$</span><span class="hl std">year</span> <span class="hl opt">+</span>
+    <span class="hl std">(df</span><span class="hl opt">$</span><span class="hl std">month</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span><span class="hl opt">/</span><span class="hl num">12</span>
+
+  <span class="hl std">df</span><span class="hl opt">$</span><span class="hl std">year</span> <span class="hl kwb">=</span> <span class="hl kwa">NULL</span>
+  <span class="hl std">df</span><span class="hl opt">$</span><span class="hl std">month</span> <span class="hl kwb">=</span> <span class="hl kwa">NULL</span>
+
+  <span class="hl kwd">return</span><span class="hl std">(df)</span>
+<span class="hl std">}</span>
+
+<span class="hl std">dataAussen</span> <span class="hl kwb">=</span> <span class="hl kwd">calcTimeID</span><span class="hl std">(dataAussen)</span>
+<span class="hl std">dataXrates</span> <span class="hl kwb">=</span> <span class="hl kwd">calcTimeID</span><span class="hl std">(dataXrates)</span>
+
+
+<span class="hl com"># Save data in RData format</span>
+<span class="hl kwd">save</span><span class="hl std">(dataAussen, dataXrates,</span>
+     <span class="hl kwc">file</span> <span class="hl std">=</span> <span class="hl str">&quot;dataforAnalysis.RData&quot;</span><span class="hl std">)</span>
+
+
+<span class="hl com"># Write data to csv (just for fun)</span>
+
+<span class="hl kwd">write.table</span><span class="hl std">(dataAussen,</span> <span class="hl kwc">file</span> <span class="hl std">=</span> <span class="hl str">&quot;dataAussen.csv&quot;</span><span class="hl std">,</span>
+            <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot;,&quot;</span><span class="hl std">,</span> <span class="hl kwc">qmethod</span> <span class="hl std">=</span> <span class="hl str">&quot;escape&quot;</span><span class="hl std">,</span> <span class="hl kwc">na</span> <span class="hl std">=</span> <span class="hl str">&quot;&quot;</span><span class="hl std">,</span>
+            <span class="hl kwc">row.names</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
+
+<span class="hl kwd">write.table</span><span class="hl std">(dataXrates,</span> <span class="hl kwc">file</span> <span class="hl std">=</span> <span class="hl str">&quot;dataXrates.csv&quot;</span><span class="hl std">,</span>
+            <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot;,&quot;</span><span class="hl std">,</span> <span class="hl kwc">qmethod</span> <span class="hl std">=</span> <span class="hl str">&quot;escape&quot;</span><span class="hl std">,</span> <span class="hl kwc">na</span> <span class="hl std">=</span> <span class="hl str">&quot;&quot;</span><span class="hl std">,</span>
+            <span class="hl kwc">row.names</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
+</pre></div>
+</div></div>
 
 
 

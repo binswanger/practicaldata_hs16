@@ -1640,19 +1640,213 @@ end.rcode -->
 <h2 id="lecture7-intro" class="noBackToTop">Introductory remark</h2>
 
 
-<p>Up to now, you have seen the most important concepts used for analyzing data with R. You have seen many data types, you have seen conditional statments, loops, and, very importantly, functions. You have also learned how to manipulate data frames, and you saw how to produce graphs. You even know how to run regressions and add regression lines to scatter plots.</p>
+<p>Up to now, you have seen the most important concepts used for analyzing data with R. You have seen many data types, you have seen conditional statements, loops, and, very importantly, functions. You have also learned how to manipulate data frames, and you saw how to produce graphs. You even know how to run regressions and add regression lines to scatter plots.</p>
 
 <p>For the coming lectures, we will focus more on the documentation process of data analysis. We may produce hundreds of graphs and regressions, and we want a format that is convenient for inspecting the results. Moreover, it is the most common thing when analyzing data that you change your mind. You change the definition of your variables, or you want to change the title in your graph etc. etc. Now, if you have produced 300 graphs and regression results, you certainly don't feel like manually going through all of them again and changing them. It would be better to change three lines of code, press a button, and all the 300 graphs, their titles, and the regression tables are spit out according to your new idea. That would be pretty cool! And that's what we want to work on now.</p>
 
 
 <h2 id="latex" >RMarkdown and Latex</h2>
 
-<p>RStudio has integrated a terrific tool that will achieve this miracle: RMarkdown. In Order to use it, you have install the <code>rmarkdown</code> package and, possibly, also Latex. How this is done is explained in detail in an <a href = "pdfs/RMarkdown&Latex.pdf">extra document</a>.</p>
+<p>RStudio has integrated a terrific tool that will achieve this miracle: RMarkdown. In Order to use it, you have install the <code>rmarkdown</code> package and, possibly, also Latex. How this is done is explained in detail in an <a href = "pdfs/RMarkdown&Latex.pdf" target = "_blank">extra document</a>.</p>
+
+
+
+<h2 id="lecture7_codelive" >&ldquo;Live&rdquo; Code from Lecture 7</h2>
+
+<p>Get &ldquo;live&rdquo; code as <a href="pdfs/Lec7_live.pdf" target = "_blank">pdf</a>.</p>
 
 
 
 
+<!--begin.rcode
 
+
+#####################################################################
+# LECTURE 7: Giving better names to economic variables in SNB data  #
+#####################################################################
+
+# This is the first of a series of scripts for Lecture 7.
+# In this script, we "dress up" our SNB data and then save them
+# To the hard disk directly in RData and csv format. So we can use them
+# next time cirectly, without any dressing up.
+
+rm(list = ls())
+
+# Read the data as they come from the SNB website
+#################################################
+
+# REPLACE THE WORKING DIRECTORY BELOW WITH THE ONE FOR YOUR DEVICE
+setwd("D:/Dropbox/Mac&Surf/Programmierkurs Dropb/Data")
+
+
+
+# Read files, adjust file names to your situation!
+rawXrates = read.csv(file = 
+   "SNB Xrates downloaded clean noEmptyCol.csv")
+
+rawAussen = read.csv(file = 
+    "SNB Aussenhandel downloaded clean noEmptyCol.csv")
+
+# If you are having troubles with the data, use the following two lines
+
+# load("rawXrates.RData")
+# load("rawExpImp.RData"); rawAussen = rawExpImp; rm(rawExpImp)
+
+# You get these data in RData format from the online script on
+# https://binswanger.github.io/practicaldata_hs16/#Problems--What-if-some-numbers-are-automatically-converted-to-dates-
+# Put these files in your working directory
+
+# Give better name to the "economic variables"
+##############################################
+
+# First for rawAussen
+
+# Make a copy of rawAussen
+dataAussen = rawAussen
+
+#rename Do
+oldNamesA_D0 = unique(as.character(dataAussen$D0))
+  # use "as.character", so we really know what we are doing, factors are tricky
+newNamesA_D0 = c("Einfuhr", "Ausfuhr", "Handelsbilanzsaldo")
+#check
+cbind(oldNamesA_D0, newNamesA_D0)
+
+# # For developing the function
+# df = dataAussen
+# colInDf = "D0"
+# oldNames = oldNamesA_D0
+# newNames = newNamesA_D0
+
+# A function for renaming, so we need to type this 3 times...
+rename = function(df, colInDf, oldNames, newNames){
+  # In case that the column where we want to change names is a factor
+  # first convert the factor to character. Otherwise, it becomes a bit more tricky
+  if (is.factor(df[[colInDf]])) {
+    df[[colInDf]] = as.character(df[[colInDf]])
+  }
+  
+  # Now rename
+  for (i in 1:length(oldNames)){
+    df[[colInDf]]   [df[[colInDf]] == oldNames[i]] = newNames[i]
+    #dataAussen[["D0"]]  [dataAussen[["D0"]] == "E"]
+    #dataAussen$D0   [dataAussen$D0 == "E"]
+  }
+  return(df)
+}
+
+dataAussen = rename(dataAussen, "D0", oldNamesA_D0, newNamesA_D0)
+
+# rename D1
+
+oldNamesA_D1 = unique(as.character(dataAussen$D1))
+newNamesA_D1= c("Total", "Maschinen, Apparate und Elektronik", 
+              "Praezisionsinstrumente, Uhren, Bijouterie",
+              "Chemikalien", "Textilien, Bekleidung, Schuhe",
+              "Fahrzeuge", "Metalle", "Uhren", "Praezisionsinstrumente",
+              "Praezisionsinstrumente, Uhren, Bijouterie")
+
+# Check            
+cbind(oldNamesA_D1, newNamesA_D1)
+                            
+dataAussen = rename(dataAussen, "D1", oldNamesA_D1, newNamesA_D1)
+
+oldNamesA_D2 = unique(as.character(dataAussen$D2))
+newNamesA_D2= c("Wert in Millionen Franken", 
+              "Veraenderung gegenueber dem Vorjahr in \u0025 - nominal",
+              "Veraenderung gegenueber dem Vorjahr in \u0025 - real")
+
+# "u0025" is UTF-8 coding
+
+# Check            
+cbind(oldNamesA_D2, newNamesA_D2)
+
+dataAussen = rename(dataAussen, "D2", oldNamesA_D2, newNamesA_D2)
+
+# Now the exchange rates
+
+# Copy the data to new data frame
+# get rid of end-of-month values of exchange rates
+dataXrates = rawXrates[rawXrates$D0 == "M0", ]
+
+oldNamesX_D1 = unique(as.character(dataXrates$D1))
+
+newNamesX_D1 = c(
+    "CHF/Euro",
+    "CHF/Britisches Pfund",
+    "CHF/100 Daenische Kronen",
+    "CHF/100 Norwegische Kronen",
+    "CHF/100 Tschechische Kronen",
+    "CHF/100 Ungarische Forint",
+    "CHF/100 Polnische Zloty",
+    "CHF/100 Rubel",
+    "CHF/100 Schwedische Kronen",
+    "CHF/100 Tuerkische Lira",
+    "CHF/US Dollar",
+    "CHF/Kanadische Dollar",
+    "CHF/100 Argentinische Pesos",
+    "CHF/100 Brasilianische Real",
+    "CHF/100 Mexikanische Pesos",
+    "CHF/Suedafrikanischer Rand",
+    "CHF/100 Japanische Yen",
+    "CHF/Australischer Dollar",
+    "CHF/100 Chinesische Yuan",
+    "CHF/100 Hongkong Dollars",
+    "CHF/100 Koreanische Won",
+    "CHF/100 Malaysische Ringgit",
+    "CHF/Neuseeländischer Dollar",
+    "CHF/100 Singapur-Dollars",
+    "CHF/100 Thailaendische Baht",
+    "CHF/Sonderziehungsrecht")
+
+  
+# Check            
+cbind(oldNamesX_D1, newNamesX_D1)
+
+dataXrates = rename(dataXrates, "D1", oldNamesX_D1, newNamesX_D1)
+
+# Create unique timeIDs
+#######################
+
+library(stringr)
+
+calcTimeID = function(df){
+  
+  df$year = as.numeric(  
+    substr(df$Date, start = 1, stop = 4)  )
+
+  df$month = as.numeric(  
+    substr(df$Date, start = 6, stop = 7)  )
+  
+  df$timeID = df$year + 
+    (df$month-1)/12
+  
+  df$year = NULL
+  df$month = NULL
+  
+  return(df)
+}
+
+dataAussen = calcTimeID(dataAussen)
+dataXrates = calcTimeID(dataXrates)
+
+
+# Save data in RData format
+save(dataAussen, dataXrates,
+     file = "dataforAnalysis.RData")
+
+
+# Write data to csv (just for fun)
+
+write.table(dataAussen, file = "dataAussen.csv", 
+            sep = ",", qmethod = "escape", na = "",
+            row.names = FALSE)
+
+write.table(dataXrates, file = "dataXrates.csv", 
+            sep = ",", qmethod = "escape", na = "",
+            row.names = FALSE)
+
+
+end.rcode-->
 
 
 
