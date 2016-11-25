@@ -2229,6 +2229,212 @@ you have to save %s!&quot;</span><span class="hl std">, x, T, r, out))</span>
 
 <p>RStudio has integrated a terrific tool that will achieve this miracle: RMarkdown. In Order to use it, you have install the <code>rmarkdown</code> package and, possibly, also Latex. How this is done is explained in detail in an <a href = "pdfs/RMarkdown&Latex.pdf" target = "_blank">extra document</a>.</p>
 
+<p>
+Below you have the code and text that generates <a href = "pdfs/MarkdownIntro.pdf" target = "_blank">this document (pdf version)</a>. It explains the most important features of RMarkdown. Just inspect the code to see how the formatting, the R code chunks and R output is generated. It's pretty self-explaining.
+</p>
+
+
+<pre style="margin-left:50px; padding:10px;
+background-color:#ffe6e6;"><code>
+
+
+---
+title: "A Very Short Introduction to R Markdown by Example"
+author: "Johannes Binswanger"
+date: "November 24, 2016"
+output: pdf_document
+---
+
+# What this document is about
+
+Let's start this text with an important warning. In the so-called YAML header that configures this
+`Rmd` file, you see the `date` item. If you happen to use a German date format there with a period
+after the number, like `24. November 2016`, then the compilation to *pdf* will not work. However, it
+works if you set it to `24\\. November 2016`. It can easily be that the date is automatically set to
+a German format if you open a new Rmarkdown file in RStudio.
+
+If you want to spellcheck your text, put the cursor at the beginning of the chunk of text that
+you want to check and then press the little green checking symbol with "ABC" on top in the taskbar
+in the upper left corner of the RMarkdown document. The rest is self-explaining.
+
+
+# The most important elements for text editing
+
+## Links
+
+Let's start with links. You use a link by placing it inside `<>`. A very useful link goes
+to the R Markdown cheatsheets. The one in English can be found under
+<https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf>.
+If you find this lengthy link to clumsy, here is a more elegant example: 
+
+* Please find the link to the German cheatsheet [here](https://www.rstudio.com/wp-content/uploads/2015/06/rmarkdown-german.pdf).
+
+A very useful link is [this one](http://rmarkdown.rstudio.com/)!
+
+## More on headings
+
+You can generating heading *x* by placing *x* hashtags (e.g. `##` for heading 2) in
+front of the heading text.
+
+## More formatting elements
+
+You can put text in *italics* by writing `*italics*`. And you put it in **bold** with `**bold**`. 
+If you want to have code appear as `code`, put it inside these little apostrophes ` `.
+  
+A unnumbered list looks like this:
+
+* First item
+* Second item
+* Third item
+
+**Make sure that there is an empty line before the list!** Otherwise, it looks different. 
+A numbered list looks like this
+
+1. First item
+2. Second item
+3. Third item
+
+Again, include an empty line before the list
+
+## Mathematical expressions
+
+You can use mathematical expressions by using Latex syntax (see e.g. 
+<https://www.sharelatex.com/learn/Mathematical_expressions>). Let's 
+copy a chunk of text from that webpage:
+
+>The well known Pythagorean theorem \(x^2 + y^2 = z^2\) was 
+proved to be invalid for other exponents. 
+Meaning the next equation has no integer solutions:
+ 
+>\[ x^n + y^n = z^n \]
+
+
+Note that I used the blockquote formatting for the quote from the sharelatex webpage. 
+The blockquote syntax is just `>`, extremely simple! Again, insert an empty line before.
+
+You can also do it like this:
+\begin{equation}
+  \int_{-\infty}^{\infty}xf(x)dx= 1.
+\end{equation}
+
+
+
+# How to include R 
+
+Now it is time to include output from R.
+
+Here is a chunk of code that is visible in the output document. (**Adjust the working 
+directory to your situation!**)
+
+
+```{r}
+
+# Load data.
+# We first use the full (absolute) path,
+# in order to avoid setwd()
+# ADJUST IT TO YOUR SITUATION
+
+load("D:/Dropbox/Mac&Surf/Programmierkurs Dropb/Data/dataForAnalysis.RData") 
+
+# And some output
+names(dataAussen)
+unique(dataAussen$D1)
+
+```
+
+
+
+You can also try to use `setwd()`:
+```{r}
+setwd("D:/Dropbox/Mac&Surf/Programmierkurs Dropb/Data")
+load("dataForAnalysis.RData") # Load data
+
+# And some output
+ls()
+
+```
+
+However, `setwd()` does not always work. If neither the full path for loading the data works, 
+nor `setwd()`, then put your markdown file in the same folder as where you have your data.
+
+In any case, changing the working directory via `setwd()` always produces a warning message. 
+Nevertheless, I personally use it whenever it is convenient (and when it happens to work).
+
+Here is something very important to realize:
+
+>**The working directory of R Markdown is quite separate from R. R Markdown often has no clue what 
+the current working directory is of your R session. It's really two separate things.**
+
+Now let's repeat the first chunk of code, but with an additional argument added to `{r}`, namely 
+`{r, echo = FALSE}`:
+
+```{r, echo = FALSE}
+
+setwd("D:/Dropbox/Mac&Surf/Programmierkurs Dropb/Data")
+load("dataForAnalysis.RData") # Load data
+
+# And some output
+names(dataAussen)
+unique(dataAussen$D1)
+
+```
+
+You see that the code that generates the output is no longer shown. You can also do exactly the 
+opposite, i.e. show the code but suppress the output using `{r, eval = FALSE}`
+
+```{r, eval = FALSE}
+
+load("dataForAnalysis.RData") # Load data
+
+# And some output
+names(dataAussen)
+unique(dataAussen$D1)
+
+```
+
+No output is shown in this case.
+
+## Including output from R in the text
+
+Suppose we want to talk of the mean of a variable in the text. We can directly include R expressions 
+in the text using `<apostrophe> r <expression> <apostrophe>`. The following blockquote contains an example.
+
+>The mean of the variable `r unique(dataXrates$D1)[2]` is 
+`r mean(
+    dataXrates$Value[dataXrates$D1==unique(dataXrates$D1)[2]], 
+    na.rm = TRUE)`. 
+Or, rounded to only 2 digits, this is
+`r round(mean(
+    dataXrates$Value[dataXrates$D1==unique(dataXrates$D1)[2]], 
+    na.rm = TRUE), digits = 2)`. 
+    
+Note that you can still interactively evalue R expressions inside an R Markdown document by selecting 
+the expression and hitting `control/command + Enter`. That is very convenient.
+
+
+## Including graphs
+
+Here is how to include a graph (without the generating code):
+
+```{r, echo = FALSE}
+
+plot(unique(dataXrates$timeID), dataXrates$Value[dataXrates$D1==unique(dataXrates$D1)[2]],
+     type = "l", col = "red3", xlab = "Month", ylab = unique(dataXrates$D1)[2],
+     main = "Die Entwicklung des Britischen Pfunds", cex.main = 0.7)
+
+```
+
+# More sophisticated formatting
+
+So far, our document looks reasonably good in both html and pdf. If you want to go for more 
+sophisticated formatting, you often have to make a choice. The reason is that you will need syntax 
+that is specific to either html or latex. Quite often, latex and pdf is the better choice, or at least 
+the more convenient one. You will see examples of how to use latex code in `Lec7_AnalysInMarkdown.Rmd` 
+and `getAnalysis.R`. Important instances are tables and colored text.
+
+
+</code></pre>
+
 
 
 <h2 id="lecture7_codelive" >&ldquo;Live&rdquo; Code from Lecture 7</h2>
@@ -2479,6 +2685,414 @@ you have to save %s!&quot;</span><span class="hl std">, x, T, r, out))</span>
 
 
 
+<h1 id="lecture8">Lecture 8</h1>
+
+
+<h2 id="lecture8_codelive" class="noBackToTop">&ldquo;Live&rdquo; code from Lecture 8</h2>
+
+
+<p>In Lecture 8 we considered a larger number of scripts, as well as the function <code>getAnalysis()</code>. The scripts do all very similar things. Essentially, I wanted to proceed step by step to illustrate how the function <code>getAnalysis()</code> emerges from more script-like code. The first time you see a function that has more than 100 lines and does many things at once, it can feel a bit intimidating. Therefore this step-by-step procedure. Below, I only post the code of the function <code>getAnalysis()</code> and then a script that uses that function. You can see all code from Lecture 8 in <a href = "pdfs/Lec8_live.pdf" target = "_blank">this document</a>.</p>
+
+<p> So this is the code for the function (the most complicated you have seen so far).</p>
+<div class="chunk" id="unnamed-chunk-12"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl std">getAnalysis</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">currency</span><span class="hl std">,</span> <span class="hl kwc">tradeDirection</span><span class="hl std">,</span> <span class="hl kwc">typeOfGoods</span><span class="hl std">,</span> <span class="hl kwc">measure</span><span class="hl std">,</span>
+                       <span class="hl kwc">startYear</span> <span class="hl std">=</span> <span class="hl num">2000</span><span class="hl std">,</span> <span class="hl kwc">dataAsChangeRates</span> <span class="hl std">=</span> <span class="hl str">&quot;yes&quot;</span><span class="hl std">,</span>
+                       <span class="hl kwc">saveGraph</span> <span class="hl std">=</span> <span class="hl str">&quot;no&quot;</span><span class="hl std">){</span>
+
+  <span class="hl com"># To make function variables nice and understandable,</span>
+  <span class="hl com"># but keep variables in function definition code</span>
+  <span class="hl com"># a bit shorter</span>
+
+  <span class="hl std">curr</span><span class="hl kwb">=</span><span class="hl std">currency; tradeDir</span><span class="hl kwb">=</span> <span class="hl std">tradeDirection;</span>
+  <span class="hl std">goodsType</span> <span class="hl kwb">=</span> <span class="hl std">typeOfGoods</span>
+
+  <span class="hl com"># END ADDED TO Lec7_forClass_Analysis1.R !!!!</span>
+
+
+  <span class="hl std">toGrowth</span> <span class="hl kwb">=</span> <span class="hl kwa">function</span><span class="hl std">(</span><span class="hl kwc">x</span><span class="hl std">){</span>
+    <span class="hl std">out</span> <span class="hl kwb">=</span> <span class="hl std">(</span><span class="hl kwd">tail</span><span class="hl std">(x,</span> <span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span><span class="hl opt">/</span><span class="hl kwd">head</span><span class="hl std">(x,</span> <span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span> <span class="hl opt">-</span><span class="hl num">1</span> <span class="hl std">)</span><span class="hl opt">*</span><span class="hl num">100</span>
+    <span class="hl std">out</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">NA</span><span class="hl std">, out)</span>
+    <span class="hl kwd">return</span><span class="hl std">(out)</span>
+  <span class="hl std">}</span>
+
+  <span class="hl com"># Select the subset of rows and columns from </span>
+  <span class="hl com"># dataAussen and dataXrates that we need,</span>
+  <span class="hl com"># assign new name to resulting object.</span>
+
+  <span class="hl std">aussen</span> <span class="hl kwb">=</span>
+    <span class="hl kwd">subset</span><span class="hl std">(dataAussen,</span>
+
+           <span class="hl std">D0</span> <span class="hl opt">==</span> <span class="hl std">tradeDir</span>  <span class="hl opt">&amp;</span>
+             <span class="hl std">D1</span> <span class="hl opt">==</span> <span class="hl std">goodsType</span> <span class="hl opt">&amp;</span>
+             <span class="hl std">D2</span> <span class="hl opt">==</span> <span class="hl std">measure</span>   <span class="hl opt">&amp;</span>
+             <span class="hl std">timeID</span> <span class="hl opt">&gt;=</span> <span class="hl std">startYear ,</span>
+
+           <span class="hl kwc">select</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;timeID&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;D0&quot;</span><span class="hl std">,</span><span class="hl str">&quot;D1&quot;</span><span class="hl std">,</span><span class="hl str">&quot;D2&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Value&quot;</span><span class="hl std">))</span>
+
+  <span class="hl std">xrates</span> <span class="hl kwb">=</span>
+    <span class="hl kwd">subset</span><span class="hl std">(dataXrates,</span>
+           <span class="hl std">D1</span> <span class="hl opt">==</span> <span class="hl std">curr</span>  <span class="hl opt">&amp;</span>
+             <span class="hl std">timeID</span> <span class="hl opt">&gt;=</span> <span class="hl std">startYear,</span>
+           <span class="hl kwc">select</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;timeID&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;D1&quot;</span><span class="hl std">,</span><span class="hl str">&quot;Value&quot;</span><span class="hl std">))</span>
+
+
+  <span class="hl com"># Bring data into wide format</span>
+  <span class="hl kwd">library</span><span class="hl std">(reshape2)</span>
+  <span class="hl std">xrates</span> <span class="hl kwb">=</span> <span class="hl kwd">dcast</span><span class="hl std">(xrates, timeID</span> <span class="hl opt">~</span> <span class="hl std">D1,</span> <span class="hl kwc">value.var</span> <span class="hl std">=</span> <span class="hl str">&quot;Value&quot;</span><span class="hl std">)</span>
+
+  <span class="hl std">aussen</span> <span class="hl kwb">=</span> <span class="hl kwd">dcast</span><span class="hl std">(aussen, timeID</span> <span class="hl opt">~</span> <span class="hl std">D0</span> <span class="hl opt">+</span> <span class="hl std">D1</span> <span class="hl opt">+</span> <span class="hl std">D2,</span> <span class="hl kwc">value.var</span> <span class="hl std">=</span> <span class="hl str">&quot;Value&quot;</span><span class="hl std">)</span>
+
+  <span class="hl com"># !!!!! QUITE SOME NEW STUFF FROM HERE ON !!!!!</span>
+  <span class="hl com"># make variable name for variable in &quot;aussen&quot; prettier,</span>
+  <span class="hl com"># such that we can use it for labels in graphs</span>
+  <span class="hl com"># In particular, we do not want the underscores</span>
+  <span class="hl com"># and not &quot;in Millionen Franken&quot;.</span>
+
+  <span class="hl kwd">library</span><span class="hl std">(stringr)</span>
+  <span class="hl com"># library to work on character (&quot;string&quot;) variables</span>
+
+  <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">str_locate_all</span><span class="hl std">(</span><span class="hl kwd">names</span><span class="hl std">(aussen)[</span><span class="hl num">2</span><span class="hl std">],</span> <span class="hl str">&quot;_&quot;</span><span class="hl std">)</span> <span class="hl com"># find ALL positions of underscores</span>
+  <span class="hl kwd">class</span><span class="hl std">(x)</span> <span class="hl com"># x is a list</span>
+  <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">max</span><span class="hl std">(x[[</span><span class="hl num">1</span><span class="hl std">]])</span>  <span class="hl com"># the LAST position of an underscore, use [[]]</span>
+  <span class="hl com"># to extract elements from lists</span>
+
+  <span class="hl com"># cut off the pieces after the last underscore</span>
+  <span class="hl com"># (&quot;Wert in Millionen Franken&quot;)</span>
+  <span class="hl std">newName</span> <span class="hl kwb">=</span> <span class="hl kwd">substr</span><span class="hl std">(</span><span class="hl kwd">names</span><span class="hl std">(aussen)[</span><span class="hl num">2</span><span class="hl std">],</span> <span class="hl kwc">start</span> <span class="hl std">=</span> <span class="hl num">1</span><span class="hl std">,</span> <span class="hl kwc">stop</span> <span class="hl std">= x</span><span class="hl opt">-</span><span class="hl num">1</span><span class="hl std">)</span>
+
+  <span class="hl com"># and replace the remaining underscore(s)</span>
+  <span class="hl std">newName</span> <span class="hl kwb">=</span> <span class="hl kwd">str_replace_all</span><span class="hl std">(newName,</span> <span class="hl str">&quot;_&quot;</span><span class="hl std">,</span> <span class="hl str">&quot; - &quot;</span><span class="hl std">)</span>
+
+  <span class="hl com"># Assign the new name to second column in &quot;aussen&quot;.</span>
+
+  <span class="hl kwd">names</span><span class="hl std">(aussen)[</span><span class="hl num">2</span><span class="hl std">]</span> <span class="hl kwb">=</span> <span class="hl std">newName</span>
+
+  <span class="hl com"># NOTE: All this code works for ANY type of export/import variable</span>
+  <span class="hl com"># we may want to analyse. It is GENERIC. That's why it's a little </span>
+  <span class="hl com"># tedious to write, but it ALWAYS works.</span>
+  <span class="hl com"># Compare this to a &quot;manual&quot; specific adjustment without the stringr</span>
+  <span class="hl com"># commands. This would only work for ONE SPECIFIC case, not ALL!!!</span>
+
+
+  <span class="hl com"># Now merge the two data sets </span>
+  <span class="hl std">D</span> <span class="hl kwb">=</span> <span class="hl kwd">merge</span><span class="hl std">(xrates, aussen,</span> <span class="hl kwc">by</span> <span class="hl std">=</span> <span class="hl str">&quot;timeID&quot;</span><span class="hl std">)</span>
+  <span class="hl com"># D is my shortcut for Data we analyse</span>
+
+  <span class="hl com"># rename &quot;timeID&quot; to something that looks pretty </span>
+  <span class="hl com"># in a graph</span>
+  <span class="hl kwd">names</span><span class="hl std">(D)[</span><span class="hl num">1</span><span class="hl std">]</span> <span class="hl kwb">=</span> <span class="hl str">&quot;Zeit&quot;</span>
+
+
+
+  <span class="hl com"># convert to rate of change, if required</span>
+  <span class="hl com"># by parameter dataAsChangeRates</span>
+
+  <span class="hl com"># For this to work for any of our potential variables</span>
+  <span class="hl com"># we need a generic names for the thing in the third column of D.</span>
+  <span class="hl com"># In the regression analysis, this will be our y-variable.</span>
+  <span class="hl std">yvar</span> <span class="hl kwb">=</span> <span class="hl kwd">names</span><span class="hl std">(D)[</span><span class="hl num">3</span><span class="hl std">]</span>
+
+  <span class="hl com"># convert to percentage changes</span>
+  <span class="hl kwa">if</span> <span class="hl std">(dataAsChangeRates</span> <span class="hl opt">==</span> <span class="hl str">&quot;yes&quot;</span><span class="hl std">) {</span>
+    <span class="hl std">D[[curr]]</span> <span class="hl kwb">=</span> <span class="hl kwd">toGrowth</span><span class="hl std">(D[[curr]])</span>
+    <span class="hl std">D[[yvar]]</span> <span class="hl kwb">=</span> <span class="hl kwd">toGrowth</span><span class="hl std">(D[[yvar]])</span>
+  <span class="hl std">}</span>
+
+  <span class="hl com"># # This is only for inspections of the data</span>
+  <span class="hl com"># # for potentially later use</span>
+  <span class="hl com"># hist(D[[curr]] )</span>
+  <span class="hl com"># max(D[[curr]], na.rm = T )</span>
+  <span class="hl com"># which.max(D[[curr]])</span>
+
+
+  <span class="hl com"># One more piece about the variable names</span>
+  <span class="hl com"># to make them useful for labels in graphs.</span>
+  <span class="hl com"># If we change the data to percentage changes</span>
+  <span class="hl com"># we want to be able to get this in the graphs</span>
+  <span class="hl com"># from the labels, otherwise, we may forget </span>
+  <span class="hl com"># whether we plotted levels or change rates</span>
+
+  <span class="hl std">addToLab</span> <span class="hl kwb">=</span> <span class="hl str">&quot;&quot;</span>  <span class="hl com"># initialize an empty character variable</span>
+
+  <span class="hl com"># make it nonempty in case that we convert data to </span>
+  <span class="hl com"># percentage changes</span>
+  <span class="hl kwa">if</span> <span class="hl std">(dataAsChangeRates</span> <span class="hl opt">==</span> <span class="hl str">&quot;yes&quot;</span><span class="hl std">){</span>
+    <span class="hl std">addToLab</span> <span class="hl kwb">=</span> <span class="hl str">&quot;(Veraenderung in \u0025)&quot;</span>
+  <span class="hl std">}</span>
+  <span class="hl std">addToLab</span>
+
+  <span class="hl com"># the &quot;\u0025&quot; code is an example of UTF-8 encoding</span>
+  <span class="hl com"># See http://www.utf8-chartable.de/unicode-utf8-table.pl?utf8=oct&amp;unicodeinhtml=dec&amp;htmlent=1</span>
+
+
+
+
+  <span class="hl com"># Preparing orderly file names</span>
+  <span class="hl com"># for option of saving graphs to file</span>
+  <span class="hl com">######################################</span>
+
+  <span class="hl com"># Create a folder inside your working directory,</span>
+  <span class="hl com"># call it plots</span>
+
+  <span class="hl com"># We want to have file names that indicate all parameters, such</span>
+  <span class="hl com"># as &quot;CHFproEuro_Ausfuhr_Total_WertNom_Veraend&quot;</span>
+  <span class="hl com"># If you then want to select a few graphs for</span>
+  <span class="hl com"># your document (e.g. thesis), you can quickly identify</span>
+  <span class="hl com"># the one you want.</span>
+  <span class="hl com"># This code is run ONLY IF saveGraph is &quot;yes&quot;</span>
+  <span class="hl kwa">if</span> <span class="hl std">(saveGraph</span><span class="hl opt">==</span><span class="hl str">&quot;yes&quot;</span><span class="hl std">){</span>
+    <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl str">&quot;&quot;</span> <span class="hl com"># This is becoming the piece that replaces</span>
+    <span class="hl com"># &quot;Wert in Millionen Franken&quot;, in case that</span>
+    <span class="hl com"># measure takes on this value.</span>
+    <span class="hl com"># Otherwise, x stays empty (i.e. &quot;&quot;)</span>
+    <span class="hl kwa">if</span> <span class="hl std">(measure</span> <span class="hl opt">==</span> <span class="hl str">&quot;Wert in Millionen Franken&quot;</span><span class="hl std">){</span>
+      <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl str">&quot;WertNom&quot;</span>
+      <span class="hl kwa">if</span> <span class="hl std">(dataAsChangeRates</span> <span class="hl opt">==</span> <span class="hl str">&quot;yes&quot;</span><span class="hl std">){</span>
+        <span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">paste0</span><span class="hl std">(x,</span> <span class="hl str">&quot;_Veraend&quot;</span><span class="hl std">)</span>
+        <span class="hl com"># if data are converted to percentage changes</span>
+        <span class="hl com"># add this to x</span>
+      <span class="hl std">}</span>
+    <span class="hl std">}</span>
+    <span class="hl com"># Now put all the pieces together, separated by</span>
+    <span class="hl com"># underscores, which are practical for the purpose</span>
+    <span class="hl com"># of file names</span>
+    <span class="hl std">fname</span> <span class="hl kwb">=</span> <span class="hl kwd">paste</span><span class="hl std">(curr, tradeDir, goodsType, x,</span> <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot;_&quot;</span><span class="hl std">)</span>
+    <span class="hl com"># There is still a forward slash. This can be a problem for</span>
+    <span class="hl com"># file names, so replace it with something else</span>
+    <span class="hl std">fname</span> <span class="hl kwb">=</span> <span class="hl kwd">str_replace</span><span class="hl std">(fname,</span> <span class="hl str">&quot;/&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;pro&quot;</span><span class="hl std">)</span>
+
+    <span class="hl com"># This is the command that actually initiating the process of</span>
+    <span class="hl com"># writing to a png file</span>
+    <span class="hl com"># note that addition of &quot;plots/&quot;, meaning that the file </span>
+    <span class="hl com"># should go into the plot folder. Also not the &quot;.png&quot;.</span>
+    <span class="hl kwd">png</span><span class="hl std">(</span><span class="hl kwc">filename</span> <span class="hl std">=</span> <span class="hl kwd">paste0</span><span class="hl std">(</span><span class="hl str">&quot;plots/&quot;</span><span class="hl std">, fname,</span> <span class="hl str">&quot;.png&quot;</span><span class="hl std">),</span> <span class="hl kwc">width</span> <span class="hl std">=</span> <span class="hl num">800</span><span class="hl std">,</span> <span class="hl kwc">height</span> <span class="hl std">=</span> <span class="hl num">800</span><span class="hl std">)</span>
+  <span class="hl std">}</span>
+
+
+
+
+
+  <span class="hl com"># ANALYSIS</span>
+  <span class="hl com">###########</span>
+
+
+  <span class="hl com"># Make a plot</span>
+
+  <span class="hl com"># !!!NEW!!!</span>
+  <span class="hl kwd">par</span><span class="hl std">(</span><span class="hl kwc">mar</span><span class="hl std">=</span><span class="hl kwd">c</span><span class="hl std">(</span><span class="hl num">5</span><span class="hl std">,</span> <span class="hl num">6</span><span class="hl std">,</span> <span class="hl num">4</span><span class="hl std">,</span> <span class="hl num">2</span><span class="hl std">)</span> <span class="hl opt">+</span> <span class="hl num">0.1</span><span class="hl std">)</span>
+  <span class="hl com"># par() is used to set graphical parameters.</span>
+  <span class="hl com"># In this case, our aim is to set the parameters</span>
+  <span class="hl com"># of the margain of the graph. We want to have space for 3 lines</span>
+  <span class="hl com"># of text on the left side, instead of only one!</span>
+  <span class="hl com"># We want to indicate the full characterization of our</span>
+  <span class="hl com"># y variable along the y axis.</span>
+
+  <span class="hl com"># mar consists of a numerical vector of the form </span>
+  <span class="hl com"># c(bottom, left, top, right) which gives the number of lines </span>
+  <span class="hl com"># of margin to be specified on the four sides of the plot. </span>
+  <span class="hl com"># The default is c(5, 4, 4, 2) + 0.1.</span>
+
+
+  <span class="hl kwd">plot</span><span class="hl std">(D[[curr]], D[[yvar]],</span>
+
+       <span class="hl kwc">pch</span> <span class="hl std">=</span> <span class="hl num">16</span><span class="hl std">,</span> <span class="hl com"># data points as dots; google &quot;r plot pch&quot;</span>
+
+       <span class="hl kwc">cex</span> <span class="hl std">=</span> <span class="hl num">.7</span><span class="hl std">,</span> <span class="hl com"># the size of the points</span>
+
+       <span class="hl kwc">xlab</span> <span class="hl std">=</span> <span class="hl kwd">paste</span><span class="hl std">(curr, addToLab,</span> <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot; &quot;</span><span class="hl std">),</span>
+
+       <span class="hl kwc">ylab</span> <span class="hl std">=</span> <span class="hl kwd">paste</span><span class="hl std">(tradeDir, goodsType, addToLab,</span> <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot;\n&quot;</span><span class="hl std">),</span>
+       <span class="hl com"># Note, here we use &quot;\n&quot; as a separater between the </span>
+       <span class="hl com"># arguments of paste. This means a line break! </span>
+
+       <span class="hl kwc">col</span> <span class="hl std">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;turquoise&quot;</span><span class="hl std">),</span> <span class="hl com"># color of dots</span>
+
+       <span class="hl kwc">main</span> <span class="hl std">=</span> <span class="hl kwd">paste0</span><span class="hl std">(tradeDir,</span> <span class="hl str">&quot; (&quot;</span><span class="hl std">, goodsType,</span> <span class="hl str">&quot;) \nund &quot;</span><span class="hl std">,</span>
+                     <span class="hl std">curr,</span> <span class="hl str">&quot;-Wechselkurs&quot;</span><span class="hl std">)</span>
+       <span class="hl com"># The title of the graph.</span>
+       <span class="hl com"># Note the line break!</span>
+
+  <span class="hl std">)</span>  <span class="hl com"># The closing parenthesis of plot</span>
+
+  <span class="hl kwd">grid</span><span class="hl std">()</span>  <span class="hl com"># add grid lines, so it is easier to judge the slope of </span>
+  <span class="hl com"># the regression line we will add next.</span>
+
+  <span class="hl com"># Add a regression line</span>
+  <span class="hl kwd">abline</span><span class="hl std">(</span>  <span class="hl kwd">lm</span><span class="hl std">(D[[yvar]]</span>  <span class="hl opt">~</span>   <span class="hl std">D[[curr]]</span>
+  <span class="hl std">),</span> <span class="hl kwc">col</span><span class="hl std">=</span><span class="hl str">&quot;red3&quot;</span><span class="hl std">,</span> <span class="hl kwc">lwd</span> <span class="hl std">=</span> <span class="hl num">3</span><span class="hl std">)</span>
+
+  <span class="hl com"># If we wrote the plot to a png file, we </span>
+  <span class="hl com"># have to &quot;close that channel&quot; to return to</span>
+  <span class="hl com"># the normal output mode.</span>
+  <span class="hl com"># This is done with the next line of code.</span>
+  <span class="hl kwa">if</span> <span class="hl std">(saveGraph</span><span class="hl opt">==</span><span class="hl str">&quot;yes&quot;</span><span class="hl std">)</span> <span class="hl kwd">dev.off</span><span class="hl std">()</span>
+
+  <span class="hl com"># Now e also run a regression</span>
+  <span class="hl com"># explicitly, so we can get the estimated</span>
+  <span class="hl com"># parameters</span>
+  <span class="hl std">reg</span> <span class="hl kwb">=</span> <span class="hl kwd">lm</span><span class="hl std">(D[[yvar]]</span><span class="hl opt">~</span><span class="hl std">D[[curr]])</span>
+  <span class="hl com"># Save the regression as an object called &quot;reg&quot;</span>
+  <span class="hl std">s</span> <span class="hl kwb">=</span> <span class="hl kwd">summary</span><span class="hl std">(reg)</span>
+  <span class="hl com"># This gives us the estimated parameters</span>
+
+  <span class="hl kwd">class</span><span class="hl std">(s)</span> <span class="hl com"># This is a new type of object</span>
+
+  <span class="hl std">s</span><span class="hl opt">$</span><span class="hl std">coefficients</span>
+  <span class="hl kwd">class</span><span class="hl std">(s</span><span class="hl opt">$</span><span class="hl std">coefficients)</span> <span class="hl com"># This is what we actually want</span>
+  <span class="hl com"># It's just a matrixm you can </span>
+  <span class="hl com"># give it row and column names</span>
+
+  <span class="hl kwd">rownames</span><span class="hl std">(s</span><span class="hl opt">$</span><span class="hl std">coefficients)</span>
+  <span class="hl kwd">colnames</span><span class="hl std">(s</span><span class="hl opt">$</span><span class="hl std">coefficients)</span>
+
+  <span class="hl com"># For a nice table in a document, these</span>
+  <span class="hl com"># names look ugly. So let's change them</span>
+
+  <span class="hl kwd">rownames</span><span class="hl std">(s</span><span class="hl opt">$</span><span class="hl std">coefficients)</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Konstante&quot;</span><span class="hl std">, curr)</span>
+  <span class="hl kwd">colnames</span><span class="hl std">(s</span><span class="hl opt">$</span><span class="hl std">coefficients)[</span><span class="hl num">1</span><span class="hl opt">:</span><span class="hl num">3</span><span class="hl std">]</span> <span class="hl kwb">=</span> <span class="hl kwd">c</span><span class="hl std">(</span><span class="hl str">&quot;Koeffizient&quot;</span><span class="hl std">,</span> <span class="hl str">&quot;Standardfehler&quot;</span><span class="hl std">,</span>
+                                    <span class="hl str">&quot;t-Wert&quot;</span><span class="hl std">)</span>
+
+
+  <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;Die zugehoerige Regressionstabelle sieht wie folgt aus.\n\n&quot;</span><span class="hl std">)</span>
+
+  <span class="hl kwd">library</span><span class="hl std">(xtable)</span>
+  <span class="hl kwd">options</span><span class="hl std">(</span><span class="hl kwc">xtable.comment</span> <span class="hl std">=</span> <span class="hl num">FALSE</span><span class="hl std">)</span>
+  <span class="hl std">tab</span> <span class="hl kwb">=</span> <span class="hl kwd">xtable</span><span class="hl std">(s)</span>
+  <span class="hl kwd">print</span><span class="hl std">(tab,</span> <span class="hl kwc">type</span><span class="hl std">=</span><span class="hl str">&quot;latex&quot;</span><span class="hl std">)</span>
+
+  <span class="hl com"># This one looks a bit weird. You are going to see later...</span>
+  <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;\n\nDas $R^2$ betraegt &quot;</span><span class="hl std">,</span> <span class="hl kwd">round</span><span class="hl std">(s</span><span class="hl opt">$</span><span class="hl std">r.squared,</span> <span class="hl kwc">digits</span> <span class="hl std">=</span> <span class="hl num">4</span><span class="hl std">),</span> <span class="hl str">&quot;.&quot;</span><span class="hl std">,</span> <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot;&quot;</span><span class="hl std">)</span>
+
+  <span class="hl com"># Since s$coefficients is just a matrix</span>
+  <span class="hl com"># we can easily extract the pvalue that tells us</span>
+  <span class="hl com"># whether the estimated relationship is statistically significant</span>
+  <span class="hl std">pval</span> <span class="hl kwb">=</span> <span class="hl std">s</span><span class="hl opt">$</span><span class="hl std">coefficients[</span><span class="hl num">2</span><span class="hl std">,</span><span class="hl num">4</span><span class="hl std">]</span>
+
+  <span class="hl com"># The below looks also weird. Can you guess what it is</span>
+  <span class="hl com"># supposed to do?</span>
+  <span class="hl kwa">if</span> <span class="hl std">(pval</span><span class="hl opt">&lt;</span><span class="hl num">00.05</span><span class="hl std">){</span>
+    <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;\\textcolor{red}{Die Beziehung ist statistisch signifikant!}&quot;</span><span class="hl std">)</span>
+  <span class="hl std">}</span> <span class="hl kwa">else</span> <span class="hl std">{</span>
+    <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;\\textcolor{blue}{Wir haben hier keine statistisch
+        signifikante Beziehung.}&quot;</span><span class="hl std">)</span>
+<span class="hl std">}</span>
+
+
+
+
+
+
+  <span class="hl std">}</span> <span class="hl com"># closing curly bracket of function definition </span>
+</pre></div>
+</div></div>
+
+
+
+<p>And here you see examples of how to call the function. In fact, we use it in a loop to generate a large number of image files.</p>
+
+
+<div class="chunk" id="unnamed-chunk-13"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl kwd">rm</span><span class="hl std">(</span><span class="hl kwc">list</span> <span class="hl std">=</span> <span class="hl kwd">ls</span><span class="hl std">())</span> <span class="hl com"># Empty workspace to start with a &quot;clean sheet&quot;</span>
+
+<span class="hl com"># REPLACE THE WORKING DIRECTORY BELOW WITH THE ONE FOR YOUR DEVICE</span>
+<span class="hl kwd">setwd</span><span class="hl std">(</span><span class="hl str">&quot;/Users/Johannes/Dropbox/Mac&amp;Surf/Programmierkurs Dropb/Data&quot;</span><span class="hl std">)</span>
+
+
+<span class="hl kwd">load</span><span class="hl std">(</span><span class="hl str">&quot;dataForAnalysis.RData&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># NEW!!!</span>
+<span class="hl com"># This is how you call a function that you define in a</span>
+<span class="hl com"># separate file!</span>
+<span class="hl com"># It's like you wrote your own &quot;package&quot; and call it here!!!</span>
+<span class="hl kwd">source</span><span class="hl std">(</span><span class="hl str">&quot;../R_Scripts/getAnalysis.R&quot;</span><span class="hl std">)</span>
+
+<span class="hl com"># Note on the path above:</span>
+<span class="hl com"># This is the example of a RELATIVE path</span>
+
+<span class="hl com"># My working directory is</span>
+<span class="hl com"># &quot;D:/Dropbox/Mac&amp;Surf/Programmierkurs Dropb/Data&quot;</span>
+<span class="hl com"># This is where I have the data. However, my R scripts</span>
+<span class="hl com"># are in a different directory:</span>
+<span class="hl com"># &quot;D:/Dropbox/Mac&amp;Surf/Programmierkurs Dropb/R_Scripts&quot;</span>
+<span class="hl com"># So, starting from the Data directory, I have to go </span>
+<span class="hl com"># one directory up, and then down to R_Scripts.</span>
+<span class="hl com"># This is what &quot;../R_Scripts/getAnalysis.R&quot; means.</span>
+
+
+<span class="hl kwd">getAnalysis</span><span class="hl std">(</span><span class="hl kwc">currency</span> <span class="hl std">=</span> <span class="hl kwd">unique</span><span class="hl std">(dataXrates</span><span class="hl opt">$</span><span class="hl std">D1)[</span><span class="hl num">2</span><span class="hl std">],</span>
+            <span class="hl kwc">tradeDirection</span> <span class="hl std">=</span> <span class="hl str">&quot;Ausfuhr&quot;</span><span class="hl std">,</span>
+            <span class="hl kwc">typeOfGoods</span> <span class="hl std">=</span> <span class="hl str">&quot;Total&quot;</span><span class="hl std">,</span>
+            <span class="hl kwc">measure</span> <span class="hl std">=</span> <span class="hl str">&quot;Wert in Millionen Franken&quot;</span><span class="hl std">,</span>
+            <span class="hl kwc">saveGraph</span> <span class="hl std">=</span> <span class="hl str">&quot;yes&quot;</span>
+<span class="hl std">)</span>
+
+<span class="hl com"># Now we want to start massproduction of graphs!</span>
+<span class="hl com"># Create a folder inside your working directory,</span>
+<span class="hl com"># call it plots</span>
+
+<span class="hl std">typeList</span> <span class="hl kwb">=</span> <span class="hl kwd">unique</span><span class="hl std">(dataAussen</span><span class="hl opt">$</span><span class="hl std">D1[dataAussen</span><span class="hl opt">$</span><span class="hl std">D0</span> <span class="hl opt">==</span> <span class="hl str">&quot;Ausfuhr&quot;</span><span class="hl std">])</span>
+<span class="hl com"># This is a list we want to loop over to get all the</span>
+<span class="hl com"># respective plots</span>
+<span class="hl com"># Note that not all values in dataAussen$D1 are available for </span>
+<span class="hl com"># &quot;Ausfuhr&quot;. Some are only available for &quot;Einfuhr&quot;. This</span>
+<span class="hl com"># explains the slightly more involved code above.</span>
+
+<span class="hl kwa">for</span> <span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl std">typeList){</span>
+  <span class="hl kwd">getAnalysis</span><span class="hl std">(</span><span class="hl kwc">currency</span> <span class="hl std">=</span> <span class="hl kwd">unique</span><span class="hl std">(dataXrates</span><span class="hl opt">$</span><span class="hl std">D1)[</span><span class="hl num">1</span><span class="hl std">],</span>
+              <span class="hl kwc">tradeDirection</span> <span class="hl std">=</span> <span class="hl str">&quot;Ausfuhr&quot;</span><span class="hl std">,</span>
+              <span class="hl kwc">typeOfGoods</span> <span class="hl std">= i,</span>
+              <span class="hl kwc">measure</span> <span class="hl std">=</span> <span class="hl str">&quot;Wert in Millionen Franken&quot;</span><span class="hl std">,</span>
+              <span class="hl kwc">saveGraph</span> <span class="hl std">=</span> <span class="hl str">&quot;yes&quot;</span>   <span class="hl com"># TURN THIS ON!!!!</span>
+  <span class="hl std">)</span>
+<span class="hl std">}</span>
+
+
+
+
+
+
+
+
+
+
+<span class="hl com"># If you are not yet impressed, then lets expand capacity!</span>
+
+
+<span class="hl std">currList</span> <span class="hl kwb">=</span> <span class="hl kwd">unique</span><span class="hl std">(dataXrates</span><span class="hl opt">$</span><span class="hl std">D1)</span>
+
+
+<span class="hl kwa">for</span> <span class="hl std">(i</span> <span class="hl kwa">in</span> <span class="hl std">currList){</span>
+  <span class="hl kwa">for</span> <span class="hl std">(j</span> <span class="hl kwa">in</span> <span class="hl std">typeList[</span><span class="hl num">2</span><span class="hl opt">:</span><span class="hl kwd">length</span><span class="hl std">(typeList)]){</span>
+
+    <span class="hl std">currency</span> <span class="hl kwb">=</span> <span class="hl std">i</span>
+    <span class="hl std">tradeDirection</span> <span class="hl kwb">=</span> <span class="hl str">&quot;Ausfuhr&quot;</span>
+    <span class="hl std">typeOfGoods</span> <span class="hl kwb">=</span> <span class="hl std">j</span>
+
+    <span class="hl kwd">cat</span><span class="hl std">(</span><span class="hl str">&quot;\\subsection{Reaktion von &quot;</span><span class="hl std">, tradeDirection,</span>
+        <span class="hl str">&quot; (&quot;</span><span class="hl std">, typeOfGoods,</span> <span class="hl str">&quot;) auf &quot;</span><span class="hl std">, currency,</span>
+        <span class="hl str">&quot;-Wechselkurs}&quot;</span><span class="hl std">,</span> <span class="hl kwc">sep</span> <span class="hl std">=</span> <span class="hl str">&quot;&quot;</span><span class="hl std">)</span>
+
+    <span class="hl kwd">getAnalysis</span><span class="hl std">(currency,</span>
+                <span class="hl std">tradeDirection,</span>
+                <span class="hl std">typeOfGoods,</span>
+                <span class="hl kwc">measure</span> <span class="hl std">=</span> <span class="hl str">&quot;Wert in Millionen Franken&quot;</span><span class="hl std">,</span>
+                <span class="hl kwc">saveGraph</span> <span class="hl std">=</span> <span class="hl str">&quot;yes&quot;</span>
+    <span class="hl std">)</span>
+  <span class="hl std">}</span>
+<span class="hl std">}</span>
+
+
+
+<span class="hl com"># The best way to inspect the output is to open a new word document </span>
+<span class="hl com"># and drag the files into that document from the file explorer/finder.  </span>
+
+
+<span class="hl com"># This is all pretty cool. There is one drawback of this procedure, </span>
+<span class="hl com"># however. We cannot automate any text comments on our results,</span>
+<span class="hl com"># nor automate the printing and commenting of regression results.</span>
+
+<span class="hl com"># In order to automate documentation further, we need an additional</span>
+<span class="hl com"># tool: RMarkdown!</span>
+</pre></div>
+</div></div>
 
 
 </div> <!-- end of div scriptText -->
