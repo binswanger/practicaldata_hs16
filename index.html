@@ -3095,6 +3095,278 @@ and `getAnalysis.R`. Important instances are tables and colored text.
 </div></div>
 
 
+
+
+<h1 id="lecture9">Lecture 9</h1>
+
+<p>In Lecture 9, we let go the final firework of this course: a relatively short markdown file, repeatedly calling the function <code>getAnalysis()</code> within loops that produces a 
+<a href = "pdfs/Lec7_AnalysInMarkdown.pdf" target = "_blank">pdf document</a> of 320 pages in 30 seconds! The document show the analysis of the relationship between all export/import items in our data and all exchange rates. Mind the results shown on pages 63-68 of the pdf document. The graphs should make you suspicious. A piece of code posted below shows that the units of measurement of the Turkish Lira changed in 2005!
+</p>
+
+<p>Here is the markdown code that produces the document (do not forget to adjust the working directory and <code>source</code> path for the call of the function <code>getAnalysis()</code>. You find the code for the latter posted in the previous Lecture.</p>
+
+
+<pre style="margin-left:50px; padding:10px;
+background-color:#ffe6e6;"><code>
+
+---
+title: Beziehung zwischen Schweizer Exporten und Importen und dem Wert des Schweizer
+  Frankens
+author: "Johannes Binswanger"
+date: "16\\. November 2016"
+output:
+  pdf_document:
+    keep_tex: yes
+  html_document: default
+  # This is for html
+  word_document: default
+header-includes: \usepackage{xcolor}
+---
+
+
+
+<!--
+Here starts to main body of the document. This part is edited in markdown,
+except for the code chunks highlighted in gray below.
+
+In the main body, comments are indicated in html-style,
+i.e. by 
+
+      <!-- blah blah -->
+
+<!-- Do not use # here. In Markdown, this means a header! 
+
+This document gives you a template on how to use Rmarkdown
+for the automated production of the output from analytics
+work. Output formats can be pdf or html, and to a limited degree, also
+word. Below, we focus on pdf, which is particularly useful in practice.
+One reason why pdf is more useful than html (if you have to make a
+choice) is that it is easier to write comments into a pdf than into
+a html document. And comments are essential for productive
+collaboration!
+
+In order to totally confuse you, the below r code chunks also contain
+latex code. In other words, this is a perfect example of some
+programming kauderwelsch...
+-->
+
+```{r, echo=FALSE, comment = "", warning=FALSE, results = "asis"}
+
+# Everything inside ```{...}``` (and highlighted gray) is code evaluated in R. 
+# Everything outside ```{...}``` is NOT R code but Markdown code.
+
+# The commands inside the curly brackets set parameters.
+# echo = FALSE means that the code that produces the output (such as setwd() etc.)
+# is not shown in the output document. You can set echo = TRUE and
+# see what happens. 
+# As for the comment command, check it out what happens if you ommit
+# that piece (I personally don't like it).
+# warning = FALSE means that the output does not shown any warnings, such as
+#   "Warning: package 'xtable' was built under R version 3.3.2"
+
+
+# result = "asis" is there to confuse you even more. It means that the pieces 
+# or characters inside the cat function below are read as latex code if
+# the document is compiled to pdf. 
+# (It would be read as html code if the document were compiled
+# to html. But html uses a different syntax, so we would have to 
+# change it, which we do not consider for now.)
+
+
+# The below commands are really like in 
+# an R script!
+
+rm(list = ls()) 
+
+# REPLACE THE WORKING DIRECTORY BELOW WITH THE ONE FOR YOUR DEVICE
+setwd("D:/Dropbox/Mac&Surf/Programmierkurs Dropb/Data")
+
+load("dataForAnalysis.RData")
+
+# ADJUST PATHS TO YOUR SITUATION
+source("../R_Scripts/getAnalysis.R")
+
+library(xtable)
+
+cat("\\section{Ein erstes Beispiel}")
+# This is a first example of latex code.
+# In latex you woudl actually use 
+# \section{Ein erstes Beispiel
+# In a RMarkdown document, you have to replace
+# all backslashes by double backslashes. 
+# Windows users already know this from setwd().
+
+
+
+getAnalysis(currency = unique(dataXrates$D1)[1], 
+                tradeDirection = "Ausfuhr", 
+                typeOfGoods = unique(dataAussen$D1)[1], 
+                measure = "Wert in Millionen Franken"
+    )
+
+```
+
+
+
+```{r, echo=FALSE, comment = "", results = "asis", eval = TRUE}
+
+# A first example of mass production in RMarkdown...
+# But now it's not just about producing figures.
+# Have a look at the output and try to infer what's going
+# on!!
+
+typeList = unique(dataAussen$D1[dataAussen$D0 == "Ausfuhr"])
+currList = unique(dataXrates$D1)
+
+cat("\\newpage")  
+      # The latex command for starting a new page
+
+cat("\\section{Reaktion der Schweizer Exporte auf Veraenderungen im Wert
+    des Schweizer Frankens}")
+      # Latex command for starting a new section
+
+# start th loop over typeList
+for (j in typeList){
+  currency = unique(dataXrates$D1)[1]
+  tradeDirection = "Ausfuhr"
+  typeOfGoods = j 
+
+  # Subtitles inside the loop, generated automatically.
+  # Isn't that cool?
+  
+  cat("\\subsection{Reaktion von ", tradeDirection, 
+      " (", typeOfGoods, ") auf ", currency,
+      "-Wechselkurs}", sep = "")
+  # \subsection in Latex is comparable to Heading 2 in MS Word
+  
+  
+  
+  getAnalysis(currency, 
+              tradeDirection, 
+              typeOfGoods, 
+              measure = "Wert in Millionen Franken"
+  )
+}
+
+
+```
+
+
+
+
+```{r, echo=FALSE, comment = "", results = "asis", eval = TRUE}
+
+# Now we loop over both export items and currencies!
+
+typeList = unique(dataAussen$D1[dataAussen$D0 == "Ausfuhr"])
+currList = unique(dataXrates$D1)
+
+cat("\\newpage")
+cat("\\section{Reaktion der Schweizer Exporte auf Veraenderungen im Wert
+    des Schweizer Frankens im Verhaeltnis zu weiteren Waehrungen}")
+
+for (i in currList){
+  for (j in typeList[2:length(typeList)]){
+    
+  currency = i
+  tradeDirection = "Ausfuhr"
+  typeOfGoods = j 
+    
+  cat("\\subsection{Reaktion von ", tradeDirection,
+      " (", typeOfGoods, ") auf ", currency,
+      "-Wechselkurs}", sep = "")
+  
+    getAnalysis(currency, 
+                tradeDirection, 
+                typeOfGoods, 
+                measure = "Wert in Millionen Franken"
+    )
+  }
+}
+
+```
+
+
+
+
+
+
+
+```{r, echo=FALSE, comment = "", eval = TRUE, , results = "asis"}
+
+# And finally the results for imports, for all items and all currencies
+
+cat("\\newpage")
+cat("\\section{Reaktion der Schweizer Importe auf Veraenderungen im Wert
+    des Schweizer Frankens}")
+
+typeList = unique(dataAussen$D1[dataAussen$D0 == "Einfuhr"])
+
+for (i in currList){
+  for (j in typeList){
+    
+  currency = i
+  tradeDirection = "Einfuhr"
+  typeOfGoods = j 
+    
+  cat("\\subsection{Reaktion von ", tradeDirection,
+      " (", typeOfGoods, ") auf ", currency,
+      "-Wechselkurs}", sep = "")
+  
+    getAnalysis(currency, 
+                tradeDirection, 
+                typeOfGoods, 
+                measure = "Wert in Millionen Franken"
+    )
+  }
+}
+
+```
+
+
+</code></pre>
+
+<p>Here is the code that allows you to inspect what's wrong with the Turkish Lira.</p>
+
+<div class="chunk" id="unnamed-chunk-14"><div class="rcode"><div class="source"><pre class="knitr r"><span class="hl com"># ADJUST WORKING DIRECTORY TO YOUR SITUATION</span>
+<span class="hl kwd">setwd</span><span class="hl std">(</span><span class="hl str">&quot;D:/Dropbox/Mac&amp;Surf/Programmierkurs Dropb/Data&quot;</span><span class="hl std">)</span>
+
+<span class="hl kwd">load</span><span class="hl std">(</span><span class="hl str">&quot;dataForAnalysis.RData&quot;</span><span class="hl std">)</span>
+
+
+<span class="hl kwd">unique</span><span class="hl std">(dataXrates</span><span class="hl opt">$</span><span class="hl std">D1)</span>
+</pre></div>
+<div class="output"><pre class="knitr r">##  [1] &quot;CHF/Euro&quot;                    &quot;CHF/Britisches Pfund&quot;       
+##  [3] &quot;CHF/100 Daenische Kronen&quot;    &quot;CHF/100 Norwegische Kronen&quot; 
+##  [5] &quot;CHF/100 Tschechische Kronen&quot; &quot;CHF/100 Ungarische Forint&quot;  
+##  [7] &quot;CHF/100 Polnische Zloty&quot;     &quot;CHF/100 Rubel&quot;              
+##  [9] &quot;CHF/100 Schwedische Kronen&quot;  &quot;CHF/100 Tuerkische Lira&quot;    
+## [11] &quot;CHF/US Dollar&quot;               &quot;CHF/Kanadische Dollar&quot;      
+## [13] &quot;CHF/100 Argentinische Pesos&quot; &quot;CHF/100 Brasilianische Real&quot;
+## [15] &quot;CHF/100 Mexikanische Pesos&quot;  &quot;CHF/Suedafrikanischer Rand&quot; 
+## [17] &quot;CHF/100 Japanische Yen&quot;      &quot;CHF/Australischer Dollar&quot;   
+## [19] &quot;CHF/100 Chinesische Yuan&quot;    &quot;CHF/100 Hongkong Dollars&quot;   
+## [21] &quot;CHF/100 Koreanische Won&quot;     &quot;CHF/100 Malaysische Ringgit&quot;
+## [23] &quot;CHF/Neuseeländischer Dollar&quot; &quot;CHF/100 Singapur-Dollars&quot;   
+## [25] &quot;CHF/100 Thailaendische Baht&quot; &quot;CHF/Sonderziehungsrecht&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">x</span> <span class="hl kwb">=</span> <span class="hl kwd">unique</span><span class="hl std">(dataXrates</span><span class="hl opt">$</span><span class="hl std">D1)[</span><span class="hl num">10</span><span class="hl std">]</span>
+<span class="hl std">x</span>
+</pre></div>
+<div class="output"><pre class="knitr r">## [1] &quot;CHF/100 Tuerkische Lira&quot;
+</pre></div>
+<div class="source"><pre class="knitr r"><span class="hl std">D</span> <span class="hl kwb">=</span> <span class="hl std">dataXrates[dataXrates</span><span class="hl opt">$</span><span class="hl std">D1</span> <span class="hl opt">==</span> <span class="hl std">x, ]</span>
+<span class="hl std">D</span> <span class="hl kwb">=</span> <span class="hl kwd">na.omit</span><span class="hl std">(D)</span>
+
+<span class="hl kwd">plot</span><span class="hl std">(D</span><span class="hl opt">$</span><span class="hl std">timeID, D</span><span class="hl opt">$</span><span class="hl std">Value,</span> <span class="hl kwc">type</span> <span class="hl std">=</span> <span class="hl str">&quot;l&quot;</span><span class="hl std">)</span>
+</pre></div>
+</div><div class="rimage default"><img src="figure/unnamed-chunk-14-1.png" title="plot of chunk unnamed-chunk-14" alt="plot of chunk unnamed-chunk-14" class="plot" /></div></div>
+
+
+<p>So that's it for this course. I hope you enjoyed it, found it useful, and, most important, you will put everything into practice!</p>
+
+
+
 </div> <!-- end of div scriptText -->
 
 
